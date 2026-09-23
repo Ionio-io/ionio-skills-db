@@ -23,8 +23,8 @@ export interface HealthInput {
   rootReadme: string;
   /** Frontmatter problems found while parsing, keyed by skill name. */
   frontmatterErrors: ReadonlyMap<string, string>;
-  /** Library-relative POSIX paths of every file that exists. */
-  files: ReadonlySet<string>;
+  /** Whether a library-relative POSIX path (file or folder) exists. */
+  exists: (path: string) => boolean;
   /** Library-relative markdown documents whose links should resolve. */
   documents: ReadonlyArray<{ path: string; content: string }>;
 }
@@ -157,14 +157,14 @@ function mentions(markdown: string, name: string): boolean {
 
 // ─── Links and references ───────────────────────────────────────────────────
 
-const brokenLinks: Check = ({ documents, files }) =>
+const brokenLinks: Check = ({ documents, exists }) =>
   documents.flatMap(({ path: file, content }) =>
     extractLocalLinks(content)
       .map((link) => ({
         link,
         resolved: path.posix.normalize(path.posix.join(path.posix.dirname(file), link.target)),
       }))
-      .filter(({ resolved }) => !files.has(resolved) && !isDirectoryOf(resolved, files))
+      .filter(({ resolved }) => !exists(resolved))
       .map(({ link }): HealthIssue => ({
         severity: 'error',
         code: 'broken-link',
@@ -187,12 +187,6 @@ const unmentionedReferences: Check = ({ skills }) =>
         file: `${skill.path}/${reference.path}`,
       })),
   );
-
-function isDirectoryOf(dir: string, files: ReadonlySet<string>): boolean {
-  const prefix = dir.replace(/\/?$/, '/');
-  for (const file of files) if (file.startsWith(prefix)) return true;
-  return false;
-}
 
 /** Department and skill a file path belongs to, from its first two segments. */
 function ownerOf(file: string): Pick<HealthIssue, 'department' | 'skill'> {

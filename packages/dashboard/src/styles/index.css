@@ -1,0 +1,334 @@
+/*
+ * Design tokens and base styles.
+ *
+ * Every colour is a role token (canvas, surface, ink, line, accent…) defined once
+ * for light and once for dark, then exposed to Tailwind through `@theme inline`.
+ * Components never use raw hex values. Department identity colours come from the
+ * dataviz skill's validated categorical palette, in fixed slot order, with separate
+ * steps for the light and dark surfaces.
+ */
+@import 'tailwindcss';
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* ─── Tokens: light ──────────────────────────────────────────────────────── */
+:root {
+  color-scheme: light;
+  --canvas: #f9f9f7;
+  --surface: #ffffff;
+  --surface-2: #f4f4f1;
+  --surface-3: #ecebe7;
+  --line: rgb(11 11 11 / 0.08);
+  --line-strong: rgb(11 11 11 / 0.14);
+  --ink: #141413;
+  --ink-2: #52514e;
+  --ink-3: #85847e;
+  --accent: #2a6fd0;
+  --accent-ink: #1d5bb3;
+  --accent-soft: rgb(42 111 208 / 0.09);
+  --good: #0f8a0f;
+  --warn: #a86b00;
+  --bad: #c53030;
+  --good-soft: rgb(15 138 15 / 0.08);
+  --warn-soft: rgb(234 160 0 / 0.12);
+  --bad-soft: rgb(208 59 59 / 0.08);
+  --focus: rgb(42 111 208 / 0.45);
+  --shadow-pop: 0 1px 2px rgb(11 11 11 / 0.04), 0 12px 32px -8px rgb(11 11 11 / 0.14);
+
+  /* Department identity: dataviz categorical slots 1-8 (light steps). */
+  --dept-1: #2a78d6;
+  --dept-2: #eb6834;
+  --dept-3: #1baf7a;
+  --dept-4: #eda100;
+  --dept-5: #e87ba4;
+  --dept-6: #008300;
+  --dept-7: #4a3aa7;
+  --dept-8: #e34948;
+  --dept-other: #898781;
+}
+
+/* ─── Tokens: dark ───────────────────────────────────────────────────────── */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --canvas: #0e0e0d;
+  --surface: #161615;
+  --surface-2: #1c1c1b;
+  --surface-3: #252523;
+  --line: rgb(255 255 255 / 0.07);
+  --line-strong: rgb(255 255 255 / 0.13);
+  --ink: #f3f2ee;
+  --ink-2: #bcbbb3;
+  --ink-3: #8a8983;
+  --accent: #5b9bec;
+  --accent-ink: #86b6ef;
+  --accent-soft: rgb(91 155 236 / 0.13);
+  --good: #3cbf3c;
+  --warn: #f2b634;
+  --bad: #ef6b6b;
+  --good-soft: rgb(12 163 12 / 0.14);
+  --warn-soft: rgb(250 178 25 / 0.13);
+  --bad-soft: rgb(230 103 103 / 0.13);
+  --focus: rgb(91 155 236 / 0.5);
+  --shadow-pop: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -8px rgb(0 0 0 / 0.6);
+
+  /* Dark steps of the same eight hues. */
+  --dept-1: #3987e5;
+  --dept-2: #d95926;
+  --dept-3: #199e70;
+  --dept-4: #c98500;
+  --dept-5: #d55181;
+  --dept-6: #008300;
+  --dept-7: #9085e9;
+  --dept-8: #e66767;
+  --dept-other: #898781;
+}
+
+@theme inline {
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'SF Mono', monospace;
+
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-good: var(--good);
+  --color-warn: var(--warn);
+  --color-bad: var(--bad);
+  --color-good-soft: var(--good-soft);
+  --color-warn-soft: var(--warn-soft);
+  --color-bad-soft: var(--bad-soft);
+
+  --shadow-pop: var(--shadow-pop);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-pop-in: pop-in 140ms var(--ease-out-expo);
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      transform: translateY(2px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  @keyframes shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-feature-settings: 'ss01', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    min-height: 100dvh;
+    background: var(--canvas);
+  }
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  /* Quiet scrollbars that match the surfaces. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-strong) transparent;
+  }
+}
+
+/* ─── Prose: rendered skill documents and ledgers ────────────────────────── */
+@layer components {
+  .prose {
+    color: var(--ink-2);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  /* Text keeps a readable measure; tables and code blocks may use the full column. */
+  .prose :where(p, ul, ol, blockquote, h1, h2, h3, h4) {
+    max-width: 72ch;
+  }
+  .prose > :first-child {
+    margin-top: 0;
+  }
+  .prose > h2:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+  .prose :where(h1, h2, h3, h4) {
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    scroll-margin-top: 88px;
+    line-height: 1.3;
+  }
+  .prose h1 {
+    font-size: 1.6rem;
+    margin: 2.2rem 0 1rem;
+  }
+  .prose h2 {
+    font-size: 1.2rem;
+    margin: 2.6rem 0 0.8rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--line);
+  }
+  .prose h3 {
+    font-size: 1.02rem;
+    margin: 1.9rem 0 0.6rem;
+  }
+  .prose h4 {
+    font-size: 0.95rem;
+    margin: 1.5rem 0 0.5rem;
+  }
+  .prose p {
+    margin: 0.85rem 0;
+  }
+  .prose strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .prose a {
+    color: var(--accent-ink);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--accent) 35%, transparent);
+    text-underline-offset: 3px;
+    transition: text-decoration-color 150ms;
+  }
+  .prose a:hover {
+    text-decoration-color: var(--accent);
+  }
+  .prose :where(ul, ol) {
+    margin: 0.85rem 0;
+    padding-left: 1.3rem;
+  }
+  .prose ul {
+    list-style: disc;
+  }
+  .prose ol {
+    list-style: decimal;
+  }
+  .prose li {
+    margin: 0.3rem 0;
+    padding-left: 0.2rem;
+  }
+  .prose li::marker {
+    color: var(--ink-3);
+  }
+  .prose blockquote {
+    margin: 1.2rem 0;
+    padding: 0.2rem 0 0.2rem 1rem;
+    border-left: 2px solid var(--line-strong);
+    color: var(--ink-2);
+  }
+  .prose hr {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin: 2rem 0;
+  }
+  .prose :not(pre) > code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    padding: 0.12em 0.38em;
+    border-radius: 5px;
+    background: var(--surface-2);
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .prose pre {
+    margin: 1.1rem 0;
+    padding: 0.9rem 1rem;
+    border-radius: 8px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .prose .table-wrap {
+    margin: 1.2rem 0;
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+  .prose th {
+    text-align: left;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--surface-2);
+    padding: 0.55rem 0.8rem;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  .prose td {
+    padding: 0.55rem 0.8rem;
+    border-top: 1px solid var(--line);
+    vertical-align: top;
+  }
+  .prose tr:first-child td {
+    border-top: 0;
+  }
+  .prose .heading-anchor {
+    margin-left: 0.4rem;
+    color: var(--ink-3);
+    opacity: 0;
+    text-decoration: none;
+    transition: opacity 150ms;
+  }
+  .prose :where(h2, h3, h4):hover .heading-anchor {
+    opacity: 1;
+  }
+}
+
+/* ─── Utilities ──────────────────────────────────────────────────────────── */
+@layer utilities {
+  .skeleton {
+    background: linear-gradient(90deg, var(--surface-2) 0%, var(--surface-3) 50%, var(--surface-2) 100%);
+    background-size: 200% 100%;
+    animation: var(--animate-shimmer);
+    border-radius: 6px;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

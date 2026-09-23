@@ -39,7 +39,9 @@ export function createApp({ library, info, host, allowedHosts, dashboardDir }: A
 
   // ─── MCP ──────────────────────────────────────────────────────────────────
   // A fresh server per request: stateless, so it always reflects the current library.
-  const mcp = createMcpHandler(() => createSkillsServer(library));
+  // Plain JSON responses: no tool streams progress, and an open SSE response would hold
+  // one of a browser's six connections per host while the dashboard is also connected.
+  const mcp = createMcpHandler(() => createSkillsServer(library), { responseMode: 'json' });
   app.all('/mcp', (c: Context) => mcp.fetch(c.req.raw, { parsedBody: c.get('parsedBody') }));
 
   // ─── REST API ─────────────────────────────────────────────────────────────

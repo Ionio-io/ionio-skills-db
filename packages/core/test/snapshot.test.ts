@@ -124,8 +124,9 @@ describe('health', () => {
     );
   });
 
-  it('does not flag links inside code fences or listed skills', () => {
+  it('does not flag links inside code fences, to files outside the library, or listed skills', () => {
     expect(codes()).not.toContain('broken-link:alpha-writer');
+    expect(codes()).not.toContain('broken-link:README.md');
     expect(codes()).not.toContain('ledger-unlisted:alpha-writer');
     expect(codes()).not.toContain('index-unlisted:beta-editor');
   });

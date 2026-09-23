@@ -6,6 +6,9 @@
  * Every query afterwards (MCP tools, REST routes, dashboard) is an in-memory read.
  * `SkillLibrary` decides when a snapshot is stale and builds a new one.
  */
+import { existsSync } from 'node:fs';
+import path from 'node:path';
+
 import { NotFoundError } from './errors.js';
 import { GitHistory } from './git.js';
 import { checkHealth, escapeRegExp } from './health.js';
@@ -104,7 +107,14 @@ export class LibrarySnapshot {
       departments,
       git,
       new SkillSearchIndex(skills),
-      checkHealth({ skills, departments, rootReadme, frontmatterErrors, files, documents }),
+      checkHealth({
+        skills,
+        departments,
+        rootReadme,
+        frontmatterErrors,
+        documents,
+        exists: existsIn(root, files),
+      }),
       contents,
       new Date().toISOString(),
     );
@@ -326,6 +336,19 @@ function toDepartmentSummary(department: Department): DepartmentSummary {
 }
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
+
+/**
+ * Link-target existence: scanned library files first (fast, and covers folders by
+ * prefix), then the disk, for links to things outside the library such as tooling docs.
+ */
+function existsIn(root: string, files: ReadonlySet<string>): (target: string) => boolean {
+  return (target) => {
+    if (files.has(target)) return true;
+    const prefix = `${target.replace(/\/$/, '')}/`;
+    for (const file of files) if (file.startsWith(prefix)) return true;
+    return existsSync(path.join(root, ...target.split('/')));
+  };
+}
 
 function latest(stamps: Array<GitStamp | null>): GitStamp | null {
   return stamps.reduce<GitStamp | null>(

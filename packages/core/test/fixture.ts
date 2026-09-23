@@ -15,7 +15,12 @@ export const FIXTURE: Record<string, string> = {
 | beta-editor | writing |
 
 **Total: 5 skills**
+
+Tooling docs: [tooling](tools/NOTES.md).
 `,
+  // Outside the library (reserved folder), but a valid link target all the same.
+  'packages/NOTES.md': '# Notes\n',
+  'tools/NOTES.md': '# Tools\n',
   'writing/README.md': `# Writing
 
 Skills for words that ship. Second sentence here.

@@ -3,7 +3,7 @@
  *
  *   SKILLS_ROOT   folder holding the departments   (default: this repository's root)
  *   HOST          interface the HTTP server binds  (default: 127.0.0.1, local only)
- *   PORT          HTTP port                        (default: 4321)
+ *   PORT          HTTP port                        (default: 4711)
  *   ALLOWED_HOSTS comma-separated hostnames to accept when HOST is not local
  */
 import { readFileSync } from 'node:fs';
@@ -30,7 +30,7 @@ export interface ServerConfig {
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): ServerConfig {
   const root = resolveLibraryRoot(import.meta.url, env);
-  const port = Number(env['PORT'] ?? 4321);
+  const port = Number(env['PORT'] ?? 4711);
   if (!Number.isInteger(port) || port <= 0 || port > 65535)
     throw new Error(`PORT must be a valid port, got "${env['PORT']}".`);
 
