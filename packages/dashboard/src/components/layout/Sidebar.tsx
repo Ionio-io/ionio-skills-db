@@ -343,9 +343,11 @@ function NavRow({
           onClick={onClick}
           aria-label={collapsed ? (tooltip ?? label) : undefined}
           className={cn(
-            'group/row relative flex h-[35px] items-center gap-2.5 rounded-md text-[14.3px] transition-[color,background-color,padding] duration-200',
+            'group/row relative flex h-[35px] items-center gap-2.5 rounded-md text-[14.3px] transition-[color,background-color,padding,margin] duration-200',
             // Nested rows line their dot up with the parent's label, or with the icon column in the rail.
-            nested && !collapsed ? 'pr-2 pl-[41px]' : 'px-[11px]',
+            // Nested rows start just right of the guide line (at 21px), so their hover and
+            // active shading never covers it; the dot still lines up with the parent's label.
+            nested && !collapsed ? 'ml-[29px] pr-2 pl-3' : 'px-[11px]',
             isActive ? 'font-medium text-ink' : 'text-ink-2 hover:bg-surface-2/70 hover:text-ink',
           )}
         >
