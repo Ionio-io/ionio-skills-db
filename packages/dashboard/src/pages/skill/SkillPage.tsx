@@ -8,6 +8,7 @@
  * The active tab (and file) live in the URL, so every view is linkable.
  */
 import { ArrowSquareOut, Lightning } from '@phosphor-icons/react';
+import { useSyncExternalStore } from 'react';
 import { useParams, useSearchParams } from 'react-router';
 
 import { CodeBlock } from '@/components/common/CodeBlock';
@@ -27,13 +28,12 @@ import { DetailsPanel } from './DetailsPanel';
 import { FilesTab } from './FilesTab';
 import { HistoryTab } from './HistoryTab';
 import { InstructionsTab } from './InstructionsTab';
+import { PANE_SCROLLER } from './pane';
 
 const TABS = ['instructions', 'files', 'source', 'history'] as const;
 
 /** A tab panel that fills the rest of the reading pane on desktop. */
 const PANE = 'pt-6 xl:flex xl:min-h-0 xl:flex-1 xl:flex-col';
-/** Panels without their own scrolling card scroll as a whole. */
-const SCROLLS = 'xl:overflow-y-auto';
 type Tab = (typeof TABS)[number];
 
 export function SkillPage() {
@@ -43,6 +43,7 @@ export function SkillPage() {
   const [params, setParams] = useSearchParams();
   const requested = params.get('tab') as Tab | null;
   const tab: Tab = requested && TABS.includes(requested) ? requested : 'instructions';
+  const pinned = usePageScrolledToEnd();
 
   if (error) return <ErrorState error={error} suggestionHref={(suggestion) => `/skills/${suggestion}`} />;
   if (!skill) return <PageSkeleton />;
@@ -109,7 +110,10 @@ export function SkillPage() {
         The negative bottom margin cancels the shell's page padding so the pane can rest
         flush at the top. Below xl the rail stacks underneath and everything flows normally.
       */}
-      <div className="grid gap-10 xl:-mb-24 xl:h-[calc(100dvh-24px)] xl:grid-cols-[minmax(0,1fr)_288px] xl:pb-6">
+      <div
+        data-pinned={pinned || undefined}
+        className="group grid gap-10 xl:-mb-24 xl:h-[calc(100dvh-24px)] xl:grid-cols-[minmax(0,1fr)_288px] xl:pb-6"
+      >
         <div className="flex min-w-0 flex-col xl:min-h-0">
           <Tabs
             value={tab}
@@ -125,27 +129,48 @@ export function SkillPage() {
             <TabPanel value="instructions" className={PANE}>
               <InstructionsTab skill={skill} />
             </TabPanel>
-            <TabPanel value="files" className={cn(PANE, SCROLLS)}>
+            <TabPanel value="files" className={cn(PANE, PANE_SCROLLER)}>
               <FilesTab skill={skill} />
             </TabPanel>
-            <TabPanel value="source" className={cn(PANE, SCROLLS)}>
+            <TabPanel value="source" className={cn(PANE, PANE_SCROLLER)}>
               <CodeBlock code={skill.raw} label={`${skill.path}/SKILL.md`} />
             </TabPanel>
-            <TabPanel value="history" className={cn(PANE, SCROLLS)}>
+            <TabPanel value="history" className={cn(PANE, PANE_SCROLLER)}>
               <HistoryTab skill={skill} />
             </TabPanel>
           </Tabs>
         </div>
 
-        <aside className="flex flex-col gap-8 xl:min-h-0 xl:overflow-y-auto xl:pb-2">
+        {/* The rail itself never scrolls: the details sit still and only the outline,
+            which takes the space left below them, scrolls. */}
+        <aside className="flex flex-col gap-8 xl:min-h-0 xl:pb-2">
           <DetailsPanel skill={skill} />
           {tab === 'instructions' && (
-            <div className="hidden xl:block">
+            <div className={cn('hidden xl:block xl:min-h-0 xl:flex-1', PANE_SCROLLER)}>
               <Outline headings={skill.headings} />
             </div>
           )}
         </aside>
       </div>
     </>
+  );
+}
+
+/**
+ * Whether the page is scrolled all the way down. The reading pane ends the page, so
+ * this is exactly when it is pinned with the tabs at the top.
+ */
+function usePageScrolledToEnd(): boolean {
+  return useSyncExternalStore(
+    (onChange) => {
+      window.addEventListener('scroll', onChange, { passive: true });
+      window.addEventListener('resize', onChange);
+      return () => {
+        window.removeEventListener('scroll', onChange);
+        window.removeEventListener('resize', onChange);
+      };
+    },
+    // A couple of pixels of slack for the fractional heights dvh produces.
+    () => window.scrollY >= document.documentElement.scrollHeight - window.innerHeight - 2,
   );
 }

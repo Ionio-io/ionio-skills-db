@@ -1,5 +1,5 @@
 /**
- * The skill's side panel: size and freshness, how an agent loads it, and which
+ * The skill's side panel: its size, how an agent loads it, and which
  * skills it is connected to.
  */
 import type { Skill, SkillRef } from '@ionio-skills/core/types';
@@ -7,10 +7,9 @@ import type { ReactNode } from 'react';
 import { Link } from 'react-router';
 
 import { CopyButton } from '@/components/common/CopyButton';
-import { RelativeTime } from '@/components/common/RelativeTime';
 import { DepartmentDot } from '@/components/skill/DepartmentMark';
 import { Tooltip } from '@/components/ui/tooltip';
-import { estimateTokens, formatBytes, formatNumber, plural } from '@/lib/format';
+import { estimateTokens, formatNumber, plural } from '@/lib/format';
 import { useServerInfo } from '@/lib/queries';
 
 export function DetailsPanel({ skill }: { skill: Skill }) {
@@ -21,35 +20,17 @@ export function DetailsPanel({ skill }: { skill: Skill }) {
     <div className="flex flex-col gap-7 text-[13px]">
       <Section title="Details">
         <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2">
-          <Row label="Words">{formatNumber(skill.stats.words)}</Row>
-          <Row label="Tokens">
-            <Tooltip content="Estimated context cost of loading SKILL.md (about 1.35 tokens per word)">
-              <span className="cursor-help">≈ {formatNumber(estimateTokens(skill.stats.words))}</span>
-            </Tooltip>
-          </Row>
           <Row label="Size">
-            {plural(skill.stats.lines, 'line')} · {formatBytes(skill.stats.bytes)}
-          </Row>
-          <Row label="Sections">{skill.headings.filter((heading) => heading.depth === 2).length}</Row>
-          <Row label="Updated">
-            {skill.updated ? (
-              <RelativeTime iso={skill.updated.date} />
-            ) : (
-              <span className="text-warn">Uncommitted</span>
-            )}
-          </Row>
-          <Row label="Path">
-            <code className="font-mono text-[12px] break-all">{skill.path}/</code>
+            {plural(skill.stats.lines, 'line')} ·{' '}
+            <Tooltip content="Estimated context cost of loading SKILL.md (about 1.35 tokens per word)">
+              <span className="cursor-help">≈ {formatNumber(estimateTokens(skill.stats.words))} tokens</span>
+            </Tooltip>
           </Row>
         </dl>
       </Section>
 
       <Section title="Load it from an agent">
-        <div className="flex flex-col gap-2">
-          <Snippet label="Tool call" value={`get_skill({ "name": "${skill.name}" })`} />
-          <Snippet label="Resource" value={`skills://skill/${skill.name}`} />
-          <Snippet label="Claude Code prompt" value={`/mcp__${serverName}__${skill.name}`} />
-        </div>
+        <Snippet label="Claude Code prompt" value={`/mcp__${serverName}__${skill.name}`} />
       </Section>
 
       {(skill.related.outgoing.length > 0 || skill.related.incoming.length > 0) && (
@@ -85,10 +66,7 @@ function Snippet({ label, value }: { label: string; value: string }) {
         <span className="text-[11.5px] text-ink-3">{label}</span>
         <CopyButton value={value} label={`Copy ${label.toLowerCase()}`} />
       </div>
-      <code
-        className="block truncate border-t border-line px-3 py-2 font-mono text-[12px] text-ink"
-        title={value}
-      >
+      <code className="block overflow-x-auto border-t border-line px-3 py-2 font-mono text-[12px] whitespace-nowrap text-ink">
         {value}
       </code>
     </div>

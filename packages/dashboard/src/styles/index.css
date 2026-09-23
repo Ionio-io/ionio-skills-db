@@ -329,13 +329,13 @@
 /*
  * Mono documents: a skill's own text (instructions and bundled files) renders in the
  * mono face, so it reads as the raw file an agent receives rather than page copy.
- * Mono runs wide, so it sits a size smaller with a little more leading.
+ * Mono runs wide, so it sits a size smaller, with tight leading so the file reads dense.
  */
 @layer components {
   .prose-mono {
     font-family: var(--font-mono);
     font-size: 13.5px;
-    line-height: 1.8;
+    line-height: 1.35;
     font-feature-settings: normal;
   }
   .prose-mono :where(h1, h2, h3, h4) {
