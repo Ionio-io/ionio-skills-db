@@ -1,0 +1,8 @@
+# Source uploads: extracted into department folders, kept locally only
+_imports/*.zip
+
+# OS / editor
+.DS_Store
+*.swp
+.vscode/
+.idea/
