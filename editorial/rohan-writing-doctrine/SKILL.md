@@ -1,6 +1,6 @@
 ---
 name: rohan-writing-doctrine
-description: How Rohan writes, edits, and judges, extracted from his calls and reviews: word choice, sentences, paragraphs, headings and titles, structure, evidence, emotional register, his catalog of Claude tells, how he reviews, the production pipeline, and a twelve-item pre-flight checklist. OPT-IN ONLY: use this skill only when the user explicitly asks for the Rohan Doctrine or Rohan's voice. A Rohan byline or account alone is not enough to trigger it.
+description: "How Rohan writes, edits, and judges, extracted from his calls and reviews: word choice, sentences, paragraphs, headings and titles, structure, evidence, emotional register, his catalog of Claude tells, how he reviews, the production pipeline, and a twelve-item pre-flight checklist. OPT-IN ONLY: use this skill only when the user explicitly asks for the Rohan Doctrine or Rohan's voice. A Rohan byline or account alone is not enough to trigger it."
 ---
 
 # THE ROHAN DOCTRINE
