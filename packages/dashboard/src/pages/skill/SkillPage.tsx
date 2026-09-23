@@ -93,9 +93,7 @@ export function SkillPage() {
           <Lightning size={13} weight="fill" className="text-accent" />
           When agents use it
         </p>
-        <p className="max-w-[90ch] text-[14px] leading-relaxed text-ink">
-          {skill.description || 'No description.'}
-        </p>
+        <p className="text-[14px] leading-relaxed text-ink">{skill.description || 'No description.'}</p>
       </div>
 
       <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_288px]">
@@ -110,7 +108,7 @@ export function SkillPage() {
               { value: 'history', label: 'History', count: skill.history.length },
             ]}
           >
-            <TabPanel value="instructions" className="pt-8">
+            <TabPanel value="instructions" className="pt-6">
               <InstructionsTab skill={skill} />
             </TabPanel>
             <TabPanel value="files" className="pt-6">

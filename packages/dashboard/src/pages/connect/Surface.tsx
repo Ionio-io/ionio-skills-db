@@ -42,9 +42,7 @@ export function Surface({ manifest }: { manifest: McpManifest }) {
                   <code className="font-mono text-[13px] font-medium text-ink">{tool.name}</code>
                   {tool.annotations?.readOnlyHint && <Badge tone="good">read-only</Badge>}
                 </div>
-                <p className="mt-1.5 max-w-[90ch] text-[13px] leading-relaxed text-ink-2">
-                  {tool.description}
-                </p>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-ink-2">{tool.description}</p>
                 {properties.length > 0 && (
                   <dl className="mt-3 grid gap-1.5">
                     {properties.map(([name, property]) => (

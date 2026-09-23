@@ -1,9 +1,30 @@
 /**
- * Primary navigation: pages, departments with their skill counts, and the live
- * connection status. The active item's highlight slides between entries.
+ * Primary navigation.
+ *
+ *   Overview
+ *   All skills            ▾   departments nest here and fold away
+ *     ● Copywriting
+ *     ● Editorial …
+ *   Health
+ *   Connect
+ *
+ * The sidebar collapses to an icon rail (⌘B). Icons keep a fixed column, so the only
+ * thing that moves is the width: labels fade out and nothing jumps. In the rail every
+ * item, department dots included, gets a tooltip that opens immediately.
  */
-import { Books, Heartbeat, House, MagnifyingGlass, Moon, Plugs, Sun, type Icon } from '@phosphor-icons/react';
-import { motion } from 'motion/react';
+import {
+  Books,
+  CaretDown,
+  Heartbeat,
+  House,
+  MagnifyingGlass,
+  Moon,
+  Plugs,
+  SidebarSimple,
+  Sun,
+  type Icon,
+} from '@phosphor-icons/react';
+import { AnimatePresence, motion } from 'motion/react';
 import type { ReactNode } from 'react';
 import { NavLink, useLocation } from 'react-router';
 
@@ -15,51 +36,139 @@ import { cn } from '@/lib/cn';
 import { shortSha } from '@/lib/format';
 import type { LiveState } from '@/lib/live';
 import { useCatalog, useHealth } from '@/lib/queries';
+import { useDepartmentsOpen } from '@/lib/sidebar';
 import { useTheme } from '@/lib/theme';
 
-export function Sidebar({
-  live,
-  onSearch,
-  onNavigate,
-}: {
+const ICON_SIZE = 17;
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+export interface SidebarProps {
   live: LiveState;
   onSearch: () => void;
+  /** Called after a link is followed (closes the mobile drawer). */
   onNavigate?: () => void;
-}) {
+  /** Icon-rail mode. The mobile drawer is always expanded. */
+  collapsed?: boolean;
+  onToggleCollapsed?: () => void;
+}
+
+export function Sidebar({ live, onSearch, onNavigate, collapsed = false, onToggleCollapsed }: SidebarProps) {
   const { data: catalog } = useCatalog();
   const { data: health } = useHealth();
   const [theme, toggleTheme] = useTheme();
+  const [departmentsOpen, setDepartmentsOpen] = useDepartmentsOpen();
   const problems = (health?.counts.error ?? 0) + (health?.counts.warning ?? 0);
 
   return (
-    <div className="flex h-full flex-col">
-      {/* Brand */}
-      <div className="flex h-14 items-center gap-2.5 px-4">
-        <img src="/favicon.svg" alt="" className="size-6 rounded-md ring-1 ring-line" />
-        <span className="text-[14px] font-semibold tracking-tight text-ink">Ionio Skills</span>
+    <div className="flex h-full flex-col overflow-hidden">
+      {/* ─── Brand ─────────────────────────────────────────────────────────── */}
+      <div className="flex h-14 shrink-0 items-center gap-2.5 px-[18px]">
+        <img src="/favicon.svg" alt="" className="size-6 shrink-0 rounded-md ring-1 ring-line" />
+        <Fade hidden={collapsed} className="text-[14px] font-semibold tracking-tight text-ink">
+          Ionio Skills
+        </Fade>
       </div>
 
-      {/* Search */}
-      <div className="px-3 pb-2">
-        <button
-          onClick={onSearch}
-          className="flex h-8 w-full items-center gap-2 rounded-md border border-line bg-surface px-2.5 text-[13px] text-ink-3 transition-colors hover:border-line-strong hover:text-ink-2"
+      {/* ─── Search ────────────────────────────────────────────────────────── */}
+      <div className="shrink-0 px-3 pb-2">
+        <Tooltip
+          content={
+            <>
+              Search <Kbd className="ml-1 border-0 bg-canvas/20 text-canvas">⌘K</Kbd>
+            </>
+          }
+          side="right"
+          delay={0}
+          disabled={!collapsed}
         >
-          <MagnifyingGlass size={14} />
-          <span className="flex-1 text-left">Search</span>
-          <Kbd>⌘K</Kbd>
-        </button>
+          <button
+            onClick={onSearch}
+            aria-label="Search"
+            className="flex h-8 w-full items-center gap-2.5 overflow-hidden rounded-md border border-line bg-surface px-[9px] text-[13px] text-ink-3 transition-colors hover:border-line-strong hover:text-ink-2"
+          >
+            <MagnifyingGlass size={ICON_SIZE - 1} className="shrink-0" />
+            <Fade hidden={collapsed} className="flex flex-1 items-center justify-between">
+              Search
+              <Kbd>⌘K</Kbd>
+            </Fade>
+          </button>
+        </Tooltip>
       </div>
 
-      <nav className="flex-1 overflow-y-auto px-3 pb-4" onClick={onNavigate}>
-        <NavGroup>
-          <NavItem to="/" end icon={House} label="Overview" />
-          <NavItem to="/skills" end icon={Books} label="All skills" count={catalog?.stats.skills} />
-          <NavItem
+      {/* ─── Navigation ────────────────────────────────────────────────────── */}
+      <nav className="flex-1 overflow-x-hidden overflow-y-auto px-3 pb-4" onClick={onNavigate}>
+        <ul className="flex flex-col gap-px">
+          <NavRow to="/" end icon={House} label="Overview" collapsed={collapsed} />
+          <NavRow
+            to="/skills"
+            end
+            icon={Books}
+            label="All skills"
+            collapsed={collapsed}
+            meta={catalog?.stats.skills}
+            action={
+              <button
+                onClick={(event) => {
+                  // Toggle the group without following the link.
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setDepartmentsOpen(!departmentsOpen);
+                }}
+                aria-label={departmentsOpen ? 'Hide departments' : 'Show departments'}
+                aria-expanded={departmentsOpen}
+                className="flex size-5 items-center justify-center rounded text-ink-3 transition-colors hover:bg-surface-3 hover:text-ink"
+              >
+                <CaretDown
+                  size={12}
+                  weight="bold"
+                  className={cn('transition-transform duration-200', !departmentsOpen && '-rotate-90')}
+                />
+              </button>
+            }
+          >
+            {/* The rail always lists departments: its dots are how you reach them when collapsed. */}
+            <AnimatePresence initial={false}>
+              {(departmentsOpen || collapsed) && catalog && (
+                <motion.ul
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.25, ease: EASE }}
+                  className="relative flex flex-col gap-px overflow-hidden"
+                >
+                  {/* Guide line under the parent icon, tying the group to "All skills". */}
+                  <span
+                    aria-hidden
+                    className={cn(
+                      'absolute top-1 bottom-1 left-[17px] w-px bg-line transition-opacity duration-200',
+                      collapsed && 'opacity-0',
+                    )}
+                  />
+                  {catalog.departments.map((department) => (
+                    <NavRow
+                      key={department.id}
+                      to={`/departments/${department.id}`}
+                      nested
+                      collapsed={collapsed}
+                      leading={<DepartmentDot id={department.id} />}
+                      label={department.title}
+                      tooltip={`${department.title} · ${department.skillNames.length} skills`}
+                      meta={department.skillNames.length}
+                    />
+                  ))}
+                </motion.ul>
+              )}
+            </AnimatePresence>
+          </NavRow>
+          <NavRow
             to="/health"
             icon={Heartbeat}
             label="Health"
-            trailing={
+            collapsed={collapsed}
+            tooltip={
+              health ? (problems > 0 ? `Health · ${problems} issues` : 'Health · all checks pass') : 'Health'
+            }
+            meta={
               health &&
               (problems > 0 ? (
                 <span className="tabular rounded-full bg-warn-soft px-1.5 text-[11px] leading-4 font-medium text-warn">
@@ -70,116 +179,185 @@ export function Sidebar({
               ))
             }
           />
-          <NavItem to="/connect" icon={Plugs} label="Connect" />
-        </NavGroup>
-
-        <p className="mt-6 mb-1.5 px-2 text-[11.5px] font-medium text-ink-3">Departments</p>
-        <NavGroup>
-          {catalog?.departments.map((department) => (
-            <NavItem
-              key={department.id}
-              to={`/departments/${department.id}`}
-              leading={<DepartmentDot id={department.id} />}
-              label={department.title}
-              count={department.skillNames.length}
-            />
-          ))}
-        </NavGroup>
+          <NavRow to="/connect" icon={Plugs} label="Connect" collapsed={collapsed} />
+        </ul>
       </nav>
 
-      {/* Footer: live status, repo position, theme */}
-      <div className="flex items-center justify-between gap-2 border-t border-line px-4 py-3">
-        <Tooltip content={LIVE_COPY[live].hint} side="top">
-          <div className="flex min-w-0 items-center gap-2 text-[12px] text-ink-3">
-            <span className="relative flex size-2">
+      {/* ─── Footer: live status, theme, collapse ─────────────────────────── */}
+      <div
+        className={cn(
+          'flex shrink-0 gap-1 border-t border-line px-3 py-3',
+          collapsed ? 'flex-col items-center' : 'items-center',
+        )}
+      >
+        <Tooltip
+          content={`${LIVE_COPY[live].label}: ${LIVE_COPY[live].hint}`}
+          side={collapsed ? 'right' : 'top'}
+          delay={collapsed ? 0 : undefined}
+        >
+          <div
+            className={cn(
+              'flex min-w-0 items-center gap-2 text-[12px] text-ink-3',
+              collapsed ? 'h-7 justify-center' : 'flex-1 pl-1.5',
+            )}
+          >
+            <span className="relative flex size-2 shrink-0">
               {live === 'live' && (
                 <span className="absolute inset-0 animate-ping rounded-full bg-good opacity-40" />
               )}
               <span className={cn('relative size-2 rounded-full', LIVE_COPY[live].dot)} />
             </span>
-            <span className="truncate">
-              {LIVE_COPY[live].label}
-              {catalog?.repo.branch && (
-                <span className="font-mono text-[11px]">
-                  {' · '}
-                  {catalog.repo.branch}
-                  {catalog.repo.head && `@${shortSha(catalog.repo.head.commit)}`}
-                </span>
-              )}
-            </span>
+            {!collapsed && (
+              <span className="truncate">
+                {LIVE_COPY[live].label}
+                {catalog?.repo.branch && (
+                  <span className="font-mono text-[11px]">
+                    {' · '}
+                    {catalog.repo.branch}
+                    {catalog.repo.head && `@${shortSha(catalog.repo.head.commit)}`}
+                  </span>
+                )}
+              </span>
+            )}
           </div>
         </Tooltip>
-        <Tooltip content={theme === 'dark' ? 'Light theme' : 'Dark theme'}>
+        <Tooltip
+          content={theme === 'dark' ? 'Light theme' : 'Dark theme'}
+          side={collapsed ? 'right' : 'top'}
+          delay={collapsed ? 0 : undefined}
+        >
           <Button variant="ghost" size="icon-sm" onClick={toggleTheme} aria-label="Toggle theme">
-            {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+            {theme === 'dark' ? <Sun size={ICON_SIZE - 1} /> : <Moon size={ICON_SIZE - 1} />}
           </Button>
         </Tooltip>
+        {onToggleCollapsed && (
+          <Tooltip
+            content={collapsed ? 'Expand sidebar  ⌘B' : 'Collapse sidebar  ⌘B'}
+            side={collapsed ? 'right' : 'top'}
+            delay={collapsed ? 0 : undefined}
+          >
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={onToggleCollapsed}
+              aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            >
+              <SidebarSimple size={ICON_SIZE - 1} />
+            </Button>
+          </Tooltip>
+        )}
       </div>
     </div>
   );
 }
 
 const LIVE_COPY: Record<LiveState, { label: string; dot: string; hint: string }> = {
-  live: { label: 'Live', dot: 'bg-good', hint: 'Edits to skill files show up here automatically' },
-  connecting: { label: 'Connecting', dot: 'bg-warn', hint: 'Reconnecting to the server' },
-  offline: { label: 'Offline', dot: 'bg-bad', hint: 'The server is not reachable' },
-  paused: { label: 'Paused', dot: 'bg-ink-3', hint: 'Live updates resume when this tab is visible again' },
+  live: { label: 'Live', dot: 'bg-good', hint: 'edits to skill files show up here automatically' },
+  connecting: { label: 'Connecting', dot: 'bg-warn', hint: 'reconnecting to the server' },
+  offline: { label: 'Offline', dot: 'bg-bad', hint: 'the server is not reachable' },
+  paused: { label: 'Paused', dot: 'bg-ink-3', hint: 'live updates resume when this tab is visible again' },
 };
 
-// ─── Items ──────────────────────────────────────────────────────────────────
+// ─── Pieces ─────────────────────────────────────────────────────────────────
 
-const NavGroup = ({ children }: { children: ReactNode }) => (
-  <ul className="flex flex-col gap-px">{children}</ul>
-);
+/** Content that fades (rather than jumps) away when the sidebar collapses. */
+function Fade({ hidden, className, children }: { hidden: boolean; className?: string; children: ReactNode }) {
+  return (
+    <span
+      aria-hidden={hidden || undefined}
+      className={cn(
+        'min-w-0 whitespace-nowrap transition-opacity duration-200',
+        hidden && 'pointer-events-none opacity-0',
+        className,
+      )}
+    >
+      {children}
+    </span>
+  );
+}
 
-function NavItem({
-  to,
-  end,
-  icon: IconComponent,
-  leading,
-  label,
-  count,
-  trailing,
-}: {
+interface NavRowProps {
   to: string;
   end?: boolean;
   /** A Phosphor icon (filled when active), or any custom `leading` mark. */
   icon?: Icon;
   leading?: ReactNode;
   label: string;
-  count?: number;
-  trailing?: ReactNode;
-}) {
+  collapsed: boolean;
+  /** Tooltip text in the rail. Defaults to the label. */
+  tooltip?: string;
+  /** Count or status shown at the end of the row. */
+  meta?: ReactNode;
+  /** A control at the end of the row (e.g. the group toggle). */
+  action?: ReactNode;
+  /** Indented child row. */
+  nested?: boolean;
+  /** Nested rows rendered below this one. */
+  children?: ReactNode;
+}
+
+function NavRow({
+  to,
+  end,
+  icon: IconComponent,
+  leading,
+  label,
+  collapsed,
+  tooltip,
+  meta,
+  action,
+  nested,
+  children,
+}: NavRowProps) {
   const { pathname } = useLocation();
-  // Skill pages count as being inside their list, not a department.
   const isActive = end ? pathname === to : pathname === to || pathname.startsWith(`${to}/`);
 
   return (
     <li>
-      <NavLink
-        to={to}
-        end={end}
-        className={cn(
-          'relative flex h-8 items-center gap-2.5 rounded-md px-2 text-[13px] transition-colors',
-          isActive ? 'font-medium text-ink' : 'text-ink-2 hover:bg-surface-2/70 hover:text-ink',
-        )}
-      >
-        {isActive && (
-          <motion.span
-            layoutId="sidebar-active"
-            className="absolute inset-0 rounded-md bg-surface shadow-[0_1px_2px_rgb(0_0_0/0.06)] ring-1 ring-line"
-            transition={{ type: 'spring', stiffness: 480, damping: 38 }}
-          />
-        )}
-        <span className="relative flex w-4 justify-center text-ink-3">
-          {IconComponent ? <IconComponent size={15} weight={isActive ? 'fill' : 'regular'} /> : leading}
-        </span>
-        <span className="relative flex-1 truncate">{label}</span>
-        {trailing ? <span className="relative flex items-center">{trailing}</span> : null}
-        {count !== undefined && !trailing && (
-          <span className="tabular relative text-[11.5px] text-ink-3">{count}</span>
-        )}
-      </NavLink>
+      <Tooltip content={tooltip ?? label} side="right" delay={0} disabled={!collapsed}>
+        <NavLink
+          to={to}
+          end={end}
+          aria-label={collapsed ? (tooltip ?? label) : undefined}
+          className={cn(
+            'group/row relative flex h-8 items-center gap-2.5 rounded-md text-[13px] transition-[color,background-color,padding] duration-200',
+            // Nested rows line their dot up with the parent's label, or with the icon column in the rail.
+            nested && !collapsed ? 'pr-2 pl-[37px]' : 'px-[9px]',
+            isActive ? 'font-medium text-ink' : 'text-ink-2 hover:bg-surface-2/70 hover:text-ink',
+          )}
+        >
+          {isActive && (
+            <motion.span
+              layoutId="sidebar-active"
+              className="absolute inset-0 rounded-md bg-surface shadow-[0_1px_2px_rgb(0_0_0/0.06)] ring-1 ring-line"
+              transition={{ type: 'spring', stiffness: 480, damping: 38 }}
+            />
+          )}
+          <span
+            className={cn(
+              'relative flex shrink-0 justify-center text-ink-3',
+              nested && !collapsed ? 'w-2' : 'w-[18px]',
+            )}
+          >
+            {IconComponent ? (
+              <IconComponent size={ICON_SIZE} weight={isActive ? 'fill' : 'regular'} />
+            ) : (
+              leading
+            )}
+          </span>
+          <Fade hidden={collapsed} className="relative flex flex-1 items-center gap-2 truncate">
+            <span className="flex-1 truncate">{label}</span>
+            {meta !== undefined &&
+              (typeof meta === 'number' ? (
+                <span className="tabular text-[11.5px] font-normal text-ink-3">{meta}</span>
+              ) : (
+                <span className="flex items-center">{meta}</span>
+              ))}
+            {action}
+          </Fade>
+        </NavLink>
+      </Tooltip>
+      {children}
     </li>
   );
 }

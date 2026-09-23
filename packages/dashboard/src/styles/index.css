@@ -171,10 +171,6 @@
     font-size: 15px;
     line-height: 1.7;
   }
-  /* Text keeps a readable measure; tables and code blocks may use the full column. */
-  .prose :where(p, ul, ol, blockquote, h1, h2, h3, h4) {
-    max-width: 72ch;
-  }
   .prose > :first-child {
     margin-top: 0;
   }
@@ -198,6 +194,22 @@
     margin: 2.6rem 0 0.8rem;
     padding-top: 1.6rem;
     border-top: 1px solid var(--line);
+  }
+  /*
+   * Section dividers: an h2 draws its own top rule, but many skills also put a
+   * markdown "---" before each section. When they do, the source rule wins and the
+   * heading drops its own, so there is always exactly one line between sections.
+   */
+  .prose hr + h2 {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+  .prose hr:has(+ :where(h1, h2, h3)) {
+    margin-bottom: 1.6rem;
+  }
+  .prose hr:last-child {
+    display: none;
   }
   .prose h3 {
     font-size: 1.02rem;

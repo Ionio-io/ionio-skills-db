@@ -25,7 +25,7 @@ import { EmptyState, ErrorState, PageSkeleton } from '@/components/common/States
 import { PageHeader } from '@/components/layout/PageHeader';
 import { DepartmentDot } from '@/components/skill/DepartmentMark';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
-import { formatCompact, formatMinutes, plural } from '@/lib/format';
+import { estimateTokens, formatCompact, plural } from '@/lib/format';
 import { useActivity, useCatalog, useHealth, useServerInfo } from '@/lib/queries';
 
 const stagger = (index: number) => ({
@@ -60,9 +60,7 @@ export function OverviewPage() {
       <Card className="mt-4 p-5">
         <div className="mb-4 flex items-baseline justify-between gap-4">
           <h2 className="text-[13px] font-medium text-ink">Where the knowledge lives</h2>
-          <span className="tabular text-[12px] text-ink-3">
-            {formatCompact(stats.words)} words · {formatMinutes(stats.readingMinutes)} to read everything
-          </span>
+          <span className="tabular text-[12px] text-ink-3">{formatCompact(stats.words)} words</span>
         </div>
         <CompositionBar departments={catalog.departments} />
       </Card>
@@ -118,7 +116,7 @@ function StatRow({ catalog }: { catalog: Catalog }) {
         label="Words"
         icon={<TextAlignLeft size={14} />}
         value={formatCompact(stats.words)}
-        detail={`About ${formatMinutes(stats.readingMinutes)} of reading`}
+        detail={`≈ ${formatCompact(estimateTokens(stats.words))} tokens to load it all`}
       />
       <Link to="/health" className="group rounded-xl focus-visible:outline-offset-4">
         <StatTile

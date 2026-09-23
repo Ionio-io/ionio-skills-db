@@ -12,13 +12,20 @@ export function Tooltip({
   content,
   children,
   side = 'top',
+  delay,
+  disabled = false,
 }: {
   content: ReactNode;
   children: ReactNode;
   side?: 'top' | 'bottom' | 'left' | 'right';
+  /** Milliseconds before showing. Defaults to the provider's delay; 0 shows immediately. */
+  delay?: number;
+  /** Render the trigger alone, with no tooltip. */
+  disabled?: boolean;
 }) {
+  if (disabled) return <>{children}</>;
   return (
-    <Primitive.Root>
+    <Primitive.Root delayDuration={delay}>
       <Primitive.Trigger asChild>{children}</Primitive.Trigger>
       <Primitive.Portal>
         <Primitive.Content

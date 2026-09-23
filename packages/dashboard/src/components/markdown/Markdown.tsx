@@ -51,6 +51,11 @@ export const Markdown = memo(function Markdown({
   );
 });
 
+/** The surface a rendered document sits on: a white card, set apart from the page. */
+export function DocumentCard({ children }: { children: ReactNode }) {
+  return <div className="rounded-xl border border-line bg-surface px-6 py-7 sm:px-9 sm:py-8">{children}</div>;
+}
+
 // ─── Element overrides ──────────────────────────────────────────────────────
 
 function components(sourcePath: string): Components {

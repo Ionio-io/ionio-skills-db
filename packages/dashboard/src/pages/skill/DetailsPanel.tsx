@@ -9,7 +9,8 @@ import { Link } from 'react-router';
 import { CopyButton } from '@/components/common/CopyButton';
 import { RelativeTime } from '@/components/common/RelativeTime';
 import { DepartmentDot } from '@/components/skill/DepartmentMark';
-import { formatBytes, formatNumber, plural } from '@/lib/format';
+import { Tooltip } from '@/components/ui/tooltip';
+import { estimateTokens, formatBytes, formatNumber, plural } from '@/lib/format';
 import { useServerInfo } from '@/lib/queries';
 
 export function DetailsPanel({ skill }: { skill: Skill }) {
@@ -21,7 +22,11 @@ export function DetailsPanel({ skill }: { skill: Skill }) {
       <Section title="Details">
         <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2">
           <Row label="Words">{formatNumber(skill.stats.words)}</Row>
-          <Row label="Reading">{plural(skill.stats.readingMinutes, 'minute')}</Row>
+          <Row label="Tokens">
+            <Tooltip content="Estimated context cost of loading SKILL.md (about 1.35 tokens per word)">
+              <span className="cursor-help">≈ {formatNumber(estimateTokens(skill.stats.words))}</span>
+            </Tooltip>
+          </Row>
           <Row label="Size">
             {plural(skill.stats.lines, 'line')} · {formatBytes(skill.stats.bytes)}
           </Row>

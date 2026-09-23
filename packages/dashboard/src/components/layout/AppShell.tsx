@@ -5,11 +5,12 @@
 import { List } from '@phosphor-icons/react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Dialog } from 'radix-ui';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { Outlet, ScrollRestoration, useLocation } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import { useLiveUpdates } from '@/lib/live';
+import { SIDEBAR_WIDTH, useSidebarCollapsed } from '@/lib/sidebar';
 
 import { CommandPalette } from './CommandPalette';
 import { Sidebar } from './Sidebar';
@@ -19,6 +20,8 @@ export function AppShell() {
   const { pathname } = useLocation();
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [collapsed, setCollapsed] = useSidebarCollapsed();
+  const sidebarWidth = collapsed ? SIDEBAR_WIDTH.collapsed : SIDEBAR_WIDTH.expanded;
 
   // ⌘K / Ctrl+K anywhere, and "/" when not typing, open the palette.
   useEffect(() => {
@@ -29,10 +32,15 @@ export function AppShell() {
         event.preventDefault();
         setPaletteOpen((open) => !open);
       }
+      // ⌘B / Ctrl+B folds the sidebar to its icon rail and back.
+      if (event.key === 'b' && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        setCollapsed(!collapsed);
+      }
     }
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, []);
+  }, [collapsed, setCollapsed]);
 
   const openPalette = () => {
     setDrawerOpen(false);
@@ -40,10 +48,17 @@ export function AppShell() {
   };
 
   return (
-    <div className="min-h-dvh">
+    // The width lives in one CSS variable so the sidebar and the main column's offset
+    // animate together.
+    <div className="min-h-dvh" style={{ '--sidebar-width': `${sidebarWidth}px` } as CSSProperties}>
       {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 hidden w-60 border-r border-line bg-canvas lg:block">
-        <Sidebar live={live} onSearch={openPalette} />
+      <aside className="fixed inset-y-0 left-0 z-20 hidden w-(--sidebar-width) border-r border-line bg-canvas transition-[width] duration-300 ease-out-expo lg:block">
+        <Sidebar
+          live={live}
+          onSearch={openPalette}
+          collapsed={collapsed}
+          onToggleCollapsed={() => setCollapsed(!collapsed)}
+        />
       </aside>
 
       {/* Mobile top bar + drawer */}
@@ -85,7 +100,7 @@ export function AppShell() {
         <span className="text-[14px] font-semibold tracking-tight">Ionio Skills</span>
       </header>
 
-      <main className="lg:pl-60">
+      <main className="transition-[padding] duration-300 ease-out-expo lg:pl-(--sidebar-width)">
         <motion.div
           key={pathname}
           initial={{ opacity: 0, y: 6 }}

@@ -46,3 +46,10 @@ export function timeAgo(iso: string, now = Date.now()): string {
 export const formatDate = (iso: string) => absolute.format(new Date(iso));
 
 export const shortSha = (commit: string) => commit.slice(0, 7);
+
+/**
+ * Rough context cost of loading text into a model, from its word count. English prose
+ * averages about 1.35 tokens per word; markdown syntax nudges it up a little.
+ */
+export const TOKENS_PER_WORD = 1.35;
+export const estimateTokens = (words: number) => Math.round(words * TOKENS_PER_WORD);

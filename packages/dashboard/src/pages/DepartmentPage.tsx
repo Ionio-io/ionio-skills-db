@@ -8,13 +8,13 @@ import { useParams, useSearchParams, Link } from 'react-router';
 import { RelativeTime } from '@/components/common/RelativeTime';
 import { EmptyState, ErrorState, PageSkeleton } from '@/components/common/States';
 import { PageHeader } from '@/components/layout/PageHeader';
-import { Markdown } from '@/components/markdown/Markdown';
+import { DocumentCard, Markdown } from '@/components/markdown/Markdown';
 import { Outline } from '@/components/markdown/Outline';
 import { DepartmentDot } from '@/components/skill/DepartmentMark';
 import { SkillRow } from '@/components/skill/SkillRow';
 import { Card } from '@/components/ui/card';
 import { TabPanel, Tabs } from '@/components/ui/tabs';
-import { formatCompact, formatMinutes, plural } from '@/lib/format';
+import { formatCompact, plural } from '@/lib/format';
 import { useDepartment, useHealth } from '@/lib/queries';
 
 export function DepartmentPage() {
@@ -45,9 +45,7 @@ export function DepartmentPage() {
         meta={
           <>
             <span>{plural(department.skills.length, 'skill')}</span>
-            <span>
-              {formatCompact(department.stats.words)} words · {formatMinutes(department.stats.readingMinutes)}
-            </span>
+            <span>{formatCompact(department.stats.words)} words</span>
             {department.updated && (
               <span>
                 Updated <RelativeTime iso={department.updated.date} />
@@ -100,13 +98,15 @@ export function DepartmentPage() {
         <TabPanel value="ledger" className="pt-6">
           {department.hasReadme ? (
             <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_200px]">
-              <Markdown
-                sourcePath={`${department.path}/README.md`}
-                hideTitle
-                hideLead={Boolean(department.summary)}
-              >
-                {department.readme}
-              </Markdown>
+              <DocumentCard>
+                <Markdown
+                  sourcePath={`${department.path}/README.md`}
+                  hideTitle
+                  hideLead={Boolean(department.summary)}
+                >
+                  {department.readme}
+                </Markdown>
+              </DocumentCard>
               <aside className="hidden xl:block">
                 <div className="sticky top-10">
                   <Outline headings={department.readmeHeadings} />

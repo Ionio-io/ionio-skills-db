@@ -44,9 +44,7 @@ export function SkillRow({
             </span>
           )}
         </div>
-        <p className="mt-1 line-clamp-2 max-w-[80ch] text-[13px] leading-relaxed text-ink-2">
-          {skill.description}
-        </p>
+        <p className="mt-1 line-clamp-2 text-[13px] leading-relaxed text-ink-2">{skill.description}</p>
       </div>
       <div className="relative z-10 flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-ink-3 md:flex-col md:items-end md:justify-center">
         {showDepartment && <DepartmentBadge id={skill.department} />}
