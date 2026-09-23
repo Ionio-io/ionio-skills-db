@@ -138,7 +138,7 @@ export function Sidebar({ live, onSearch, onNavigate, collapsed = false, onToggl
                   initial={{ height: 0, opacity: 0, filter: 'blur(3px)' }}
                   animate={{ height: 'auto', opacity: 1, filter: 'blur(0px)' }}
                   exit={{ height: 0, opacity: 0, filter: 'blur(3px)' }}
-                  transition={{ duration: 0.275, ease: EASE }}
+                  transition={{ duration: 0.2875, ease: EASE }}
                   className="relative flex flex-col gap-px overflow-hidden"
                 >
                   {/* Guide line under the parent icon, tying the group to "All skills". */}
