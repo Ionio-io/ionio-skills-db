@@ -134,12 +134,19 @@ export function Sidebar({ live, onSearch, onNavigate, collapsed = false, onToggl
             <AnimatePresence initial={false}>
               {(departmentsOpen || collapsed) && catalog && (
                 <motion.ul
-                  // Folds with a soft blur so the rows dissolve rather than clip.
-                  initial={{ height: 0, opacity: 0, filter: 'blur(3px)' }}
-                  animate={{ height: 'auto', opacity: 1, filter: 'blur(0px)' }}
-                  exit={{ height: 0, opacity: 0, filter: 'blur(3px)' }}
+                  // Folds with a soft blur so the rows dissolve rather than clip. The list
+                  // clips its overflow only while the height animates: at rest it must not,
+                  // or it cuts off the active row's ring and shadow at its edges.
+                  initial={{ height: 0, opacity: 0, filter: 'blur(3px)', overflow: 'hidden' }}
+                  animate={{
+                    height: 'auto',
+                    opacity: 1,
+                    filter: 'blur(0px)',
+                    transitionEnd: { overflow: 'visible', filter: 'none' },
+                  }}
+                  exit={{ height: 0, opacity: 0, filter: 'blur(3px)', overflow: 'hidden' }}
                   transition={{ duration: 0.2875, ease: EASE }}
-                  className="relative flex flex-col gap-px overflow-hidden"
+                  className="relative flex flex-col gap-px"
                 >
                   {/* Guide line under the parent icon, tying the group to "All skills". */}
                   <span
