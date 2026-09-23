@@ -1,6 +1,15 @@
 # Source uploads: extracted into department folders, kept locally only
 _imports/*.zip
 
+# Dependencies and build output
+node_modules/
+dist/
+*.tsbuildinfo
+coverage/
+
+# Local screenshots from UI verification
+.screenshots/
+
 # OS / editor
 .DS_Store
 *.swp

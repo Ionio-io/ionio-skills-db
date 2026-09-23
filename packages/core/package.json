@@ -1,0 +1,31 @@
+{
+  "name": "@ionio-skills/core",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Reads the skills library from disk: departments, skills, references, git history, search and health checks.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "ionio-source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./types": {
+      "ionio-source": "./src/types.ts",
+      "types": "./dist/types.d.ts",
+      "default": "./dist/types.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "github-slugger": "^2.0.0",
+    "minisearch": "^7.2.0",
+    "yaml": "^2.9.1"
+  }
+}

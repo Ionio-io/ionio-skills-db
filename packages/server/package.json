@@ -1,0 +1,28 @@
+{
+  "name": "@ionio-skills/server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Serves the skills library to AI agents over MCP (stdio and Streamable HTTP) and to the dashboard over REST.",
+  "type": "module",
+  "bin": {
+    "ionio-skills-mcp": "./dist/bin/stdio.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "dev": "tsx watch --conditions=ionio-source --clear-screen=false src/bin/http.ts",
+    "start": "node dist/bin/http.js",
+    "mcp": "node dist/bin/stdio.js"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "^2.1.0"
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.1.1",
+    "@ionio-skills/core": "0.1.0",
+    "@modelcontextprotocol/hono": "^2.0.1",
+    "@modelcontextprotocol/server": "^2.1.0",
+    "hono": "^4.13.8",
+    "zod": "^4.6.5"
+  }
+}
