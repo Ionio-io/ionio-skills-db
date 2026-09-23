@@ -51,4 +51,4 @@ export const useSidebarCollapsed = () => usePreference('sidebar-collapsed');
 export const useDepartmentsOpen = () => usePreference('sidebar-departments-open');
 
 /** Rail and full widths, shared by the sidebar and the main column's offset. */
-export const SIDEBAR_WIDTH = { expanded: 216, collapsed: 60 } as const;
+export const SIDEBAR_WIDTH = { expanded: 238, collapsed: 66 } as const;

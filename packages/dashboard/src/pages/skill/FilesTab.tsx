@@ -103,7 +103,9 @@ export function FilesTab({ skill }: { skill: Skill }) {
               <Skeleton className="h-4 w-5/6" />
             </div>
           ) : isMarkdown && view === 'rendered' ? (
-            <Markdown sourcePath={`${skill.path}/${data.file.path}`}>{data.content}</Markdown>
+            <Markdown sourcePath={`${skill.path}/${data.file.path}`} mono>
+              {data.content}
+            </Markdown>
           ) : (
             <CodeBlock code={data.content} label={data.file.name} className="-m-2" />
           )}

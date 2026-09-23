@@ -326,6 +326,43 @@
   }
 }
 
+/*
+ * Mono documents: a skill's own text (instructions and bundled files) renders in the
+ * mono face, so it reads as the raw file an agent receives rather than page copy.
+ * Mono runs wide, so it sits a size smaller with a little more leading.
+ */
+@layer components {
+  .prose-mono {
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    line-height: 1.8;
+    font-feature-settings: normal;
+  }
+  .prose-mono :where(h1, h2, h3, h4) {
+    letter-spacing: -0.01em;
+  }
+  .prose-mono h1 {
+    font-size: 1.35rem;
+  }
+  .prose-mono h2 {
+    font-size: 1.1rem;
+  }
+  .prose-mono h3 {
+    font-size: 0.98rem;
+  }
+  .prose-mono h4 {
+    font-size: 0.92rem;
+  }
+  .prose-mono table {
+    font-size: 12.5px;
+  }
+  /* Inline code is already mono here; the tint alone marks it. */
+  .prose-mono :not(pre) > code {
+    font-size: 0.95em;
+    border-color: transparent;
+  }
+}
+
 /* ─── Utilities ──────────────────────────────────────────────────────────── */
 @layer utilities {
   .skeleton {

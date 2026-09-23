@@ -24,6 +24,8 @@ export interface MarkdownProps {
   hideTitle?: boolean;
   /** Also drop the first paragraph after it, when the header already shows it as a summary. */
   hideLead?: boolean;
+  /** Render in the mono face: used for a skill's own text, to read as the raw file. */
+  mono?: boolean;
   className?: string;
 }
 
@@ -33,13 +35,14 @@ export const Markdown = memo(function Markdown({
   hideTitle,
   hideLead,
   className,
+  mono,
 }: MarkdownProps) {
   // Without its title, a document may open on a rule or a heading whose top border
   // would double the one above; drop that leading rule too.
   let markdown = hideTitle ? children.replace(/^\s*#\s+.+\n+(?:(?:-{3,}|\*{3,})\s*\n+)?/, '') : children;
   if (hideLead) markdown = markdown.replace(/^\s*(?![#|>\-*+\d<`])[^\n]+(?:\n(?!\s*\n)[^\n]+)*\n+/, '');
   return (
-    <div className={cn('prose', className)}>
+    <div className={cn('prose', mono && 'prose-mono', className)}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeSlug]}

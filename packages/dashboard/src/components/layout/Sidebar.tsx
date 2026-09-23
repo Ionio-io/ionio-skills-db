@@ -25,7 +25,7 @@ import {
   type Icon,
 } from '@phosphor-icons/react';
 import { AnimatePresence, motion } from 'motion/react';
-import type { ReactNode } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
 import { NavLink, useLocation } from 'react-router';
 
 import { DepartmentDot } from '@/components/skill/DepartmentMark';
@@ -39,7 +39,7 @@ import { useCatalog, useHealth } from '@/lib/queries';
 import { useDepartmentsOpen } from '@/lib/sidebar';
 import { useTheme } from '@/lib/theme';
 
-const ICON_SIZE = 17;
+const ICON_SIZE = 19;
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export interface SidebarProps {
@@ -62,9 +62,9 @@ export function Sidebar({ live, onSearch, onNavigate, collapsed = false, onToggl
   return (
     <div className="flex h-full flex-col overflow-hidden">
       {/* ─── Brand ─────────────────────────────────────────────────────────── */}
-      <div className="flex h-14 shrink-0 items-center gap-2.5 px-[18px]">
-        <img src="/favicon.svg" alt="" className="size-6 shrink-0 rounded-md ring-1 ring-line" />
-        <Fade hidden={collapsed} className="text-[14px] font-semibold tracking-tight text-ink">
+      <div className="flex h-[60px] shrink-0 items-center gap-2.5 px-5">
+        <img src="/favicon.svg" alt="" className="size-[26px] shrink-0 rounded-md ring-1 ring-line" />
+        <Fade hidden={collapsed} className="text-[15.5px] font-semibold tracking-tight text-ink">
           Ionio Skills
         </Fade>
       </div>
@@ -84,7 +84,7 @@ export function Sidebar({ live, onSearch, onNavigate, collapsed = false, onToggl
           <button
             onClick={onSearch}
             aria-label="Search"
-            className="flex h-8 w-full items-center gap-2.5 overflow-hidden rounded-md border border-line bg-surface px-[9px] text-[13px] text-ink-3 transition-colors hover:border-line-strong hover:text-ink-2"
+            className="flex h-[35px] w-full items-center gap-2.5 overflow-hidden rounded-md border border-line bg-surface px-[10px] text-[14px] text-ink-3 transition-colors hover:border-line-strong hover:text-ink-2"
           >
             <MagnifyingGlass size={ICON_SIZE - 1} className="shrink-0" />
             <Fade hidden={collapsed} className="flex flex-1 items-center justify-between">
@@ -106,6 +106,10 @@ export function Sidebar({ live, onSearch, onNavigate, collapsed = false, onToggl
             label="All skills"
             collapsed={collapsed}
             meta={catalog?.stats.skills}
+            // Clicking the row while already on All skills folds or unfolds the group,
+            // the same as the arrow. Arriving from elsewhere always shows it.
+            onActiveClick={collapsed ? undefined : () => setDepartmentsOpen(!departmentsOpen)}
+            onFollow={() => setDepartmentsOpen(true)}
             action={
               <button
                 onClick={(event) => {
@@ -140,7 +144,7 @@ export function Sidebar({ live, onSearch, onNavigate, collapsed = false, onToggl
                   <span
                     aria-hidden
                     className={cn(
-                      'absolute top-1 bottom-1 left-[17px] w-px bg-line transition-opacity duration-200',
+                      'absolute top-1 bottom-1 left-[21px] w-px bg-line transition-opacity duration-200',
                       collapsed && 'opacity-0',
                     )}
                   />
@@ -171,11 +175,11 @@ export function Sidebar({ live, onSearch, onNavigate, collapsed = false, onToggl
             meta={
               health &&
               (problems > 0 ? (
-                <span className="tabular rounded-full bg-warn-soft px-1.5 text-[11px] leading-4 font-medium text-warn">
+                <span className="tabular rounded-full bg-warn-soft px-1.5 text-[12px] leading-[18px] font-medium text-warn">
                   {problems}
                 </span>
               ) : (
-                <span className="size-1.5 rounded-full bg-good" aria-label="All checks pass" />
+                <span className="size-[7px] rounded-full bg-good" aria-label="All checks pass" />
               ))
             }
           />
@@ -197,7 +201,7 @@ export function Sidebar({ live, onSearch, onNavigate, collapsed = false, onToggl
         >
           <div
             className={cn(
-              'flex min-w-0 items-center gap-2 text-[12px] text-ink-3',
+              'flex min-w-0 items-center gap-2 text-[13px] text-ink-3',
               collapsed ? 'h-7 justify-center' : 'flex-1 pl-1.5',
             )}
           >
@@ -294,6 +298,10 @@ interface NavRowProps {
   nested?: boolean;
   /** Nested rows rendered below this one. */
   children?: ReactNode;
+  /** Replaces navigation when the row is clicked while its page is already open. */
+  onActiveClick?: () => void;
+  /** Called when a click navigates to the row's page. */
+  onFollow?: () => void;
 }
 
 function NavRow({
@@ -308,9 +316,22 @@ function NavRow({
   action,
   nested,
   children,
+  onActiveClick,
+  onFollow,
 }: NavRowProps) {
   const { pathname } = useLocation();
   const isActive = end ? pathname === to : pathname === to || pathname.startsWith(`${to}/`);
+
+  function onClick(event: MouseEvent<HTMLAnchorElement>) {
+    if (isActive && onActiveClick) {
+      // Already here: the click is a toggle, not a navigation (and keeps a mobile drawer open).
+      event.preventDefault();
+      event.stopPropagation();
+      onActiveClick();
+    } else {
+      onFollow?.();
+    }
+  }
 
   return (
     <li>
@@ -318,11 +339,12 @@ function NavRow({
         <NavLink
           to={to}
           end={end}
+          onClick={onClick}
           aria-label={collapsed ? (tooltip ?? label) : undefined}
           className={cn(
-            'group/row relative flex h-8 items-center gap-2.5 rounded-md text-[13px] transition-[color,background-color,padding] duration-200',
+            'group/row relative flex h-[35px] items-center gap-2.5 rounded-md text-[14.3px] transition-[color,background-color,padding] duration-200',
             // Nested rows line their dot up with the parent's label, or with the icon column in the rail.
-            nested && !collapsed ? 'pr-2 pl-[37px]' : 'px-[9px]',
+            nested && !collapsed ? 'pr-2 pl-[41px]' : 'px-[11px]',
             isActive ? 'font-medium text-ink' : 'text-ink-2 hover:bg-surface-2/70 hover:text-ink',
           )}
         >
@@ -336,7 +358,7 @@ function NavRow({
           <span
             className={cn(
               'relative flex shrink-0 justify-center text-ink-3',
-              nested && !collapsed ? 'w-2' : 'w-[18px]',
+              nested && !collapsed ? 'w-2' : 'w-5',
             )}
           >
             {IconComponent ? (
@@ -349,7 +371,7 @@ function NavRow({
             <span className="flex-1 truncate">{label}</span>
             {meta !== undefined &&
               (typeof meta === 'number' ? (
-                <span className="tabular text-[11.5px] font-normal text-ink-3">{meta}</span>
+                <span className="tabular text-[12.5px] font-normal text-ink-3">{meta}</span>
               ) : (
                 <span className="flex items-center">{meta}</span>
               ))}

@@ -9,7 +9,7 @@ import { DocumentCard, Markdown } from '@/components/markdown/Markdown';
 export function InstructionsTab({ skill }: { skill: Skill }) {
   return (
     <DocumentCard>
-      <Markdown sourcePath={`${skill.path}/SKILL.md`} hideTitle>
+      <Markdown sourcePath={`${skill.path}/SKILL.md`} hideTitle mono>
         {skill.body}
       </Markdown>
     </DocumentCard>
