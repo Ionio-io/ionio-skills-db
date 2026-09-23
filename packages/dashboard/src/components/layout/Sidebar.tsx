@@ -134,10 +134,11 @@ export function Sidebar({ live, onSearch, onNavigate, collapsed = false, onToggl
             <AnimatePresence initial={false}>
               {(departmentsOpen || collapsed) && catalog && (
                 <motion.ul
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.25, ease: EASE }}
+                  // Folds with a soft blur so the rows dissolve rather than clip.
+                  initial={{ height: 0, opacity: 0, filter: 'blur(3px)' }}
+                  animate={{ height: 'auto', opacity: 1, filter: 'blur(0px)' }}
+                  exit={{ height: 0, opacity: 0, filter: 'blur(3px)' }}
+                  transition={{ duration: 0.275, ease: EASE }}
                   className="relative flex flex-col gap-px overflow-hidden"
                 >
                   {/* Guide line under the parent icon, tying the group to "All skills". */}
