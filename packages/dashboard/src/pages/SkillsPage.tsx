@@ -1,14 +1,14 @@
 /**
  * All skills: filter by department, narrow by text, and sort. Filters live in the
- * URL (?q=&department=&sort=), so any view can be linked to. Rows animate into
- * their new positions when the order changes.
+ * URL (?q=&department=&sort=), so any view can be linked to.
  */
 import { Books, MagnifyingGlass, X } from '@phosphor-icons/react';
 import type { SkillSummary } from '@ionio-skills/core/types';
-import { AnimatePresence, motion } from 'motion/react';
+import { motion } from 'motion/react';
 import { useMemo } from 'react';
 import { useSearchParams } from 'react-router';
 
+import { AnimatedHeight } from '@/components/common/AnimatedHeight';
 import { EmptyState, ErrorState, PageSkeleton } from '@/components/common/States';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { DepartmentDot } from '@/components/skill/DepartmentMark';
@@ -131,22 +131,26 @@ export function SkillsPage() {
         </EmptyState>
       ) : (
         <Card className="overflow-hidden">
-          <ul className="divide-y divide-line">
-            <AnimatePresence initial={false}>
+          {/*
+            Rows that drop out of the filter leave at once rather than fading in place
+            (which left a gap); rows that stay glide to their new position; new rows
+            fade in; and the card eases to its new height.
+          */}
+          <AnimatedHeight>
+            <ul className="divide-y divide-line">
               {visible.map((skill) => (
                 <motion.li
                   key={skill.name}
                   layout="position"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2, layout: { type: 'spring', stiffness: 500, damping: 45 } }}
+                  initial={{ opacity: 0, filter: 'blur(2px)' }}
+                  animate={{ opacity: 1, filter: 'blur(0px)' }}
+                  transition={{ duration: 0.22, layout: { type: 'spring', stiffness: 500, damping: 45 } }}
                 >
                   <SkillRow skill={skill} />
                 </motion.li>
               ))}
-            </AnimatePresence>
-          </ul>
+            </ul>
+          </AnimatedHeight>
         </Card>
       )}
     </>

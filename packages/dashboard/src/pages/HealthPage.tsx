@@ -4,10 +4,11 @@
  */
 import { CheckCircle, Info, SealCheck, Warning, WarningOctagon, type Icon } from '@phosphor-icons/react';
 import type { HealthIssue, IssueSeverity } from '@ionio-skills/core/types';
-import { AnimatePresence, motion } from 'motion/react';
+import { motion } from 'motion/react';
 import { useState, type ReactNode } from 'react';
 import { Link } from 'react-router';
 
+import { AnimatedHeight } from '@/components/common/AnimatedHeight';
 import { EmptyState, ErrorState, PageSkeleton } from '@/components/common/States';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { DepartmentDot } from '@/components/skill/DepartmentMark';
@@ -98,21 +99,22 @@ export function HealthPage() {
             />
           </div>
           <Card className="overflow-hidden">
-            <ul className="divide-y divide-line">
-              <AnimatePresence initial={false}>
-                {visible.map((issue, index) => (
+            {/* Same filtering motion as the skills list: no ghost rows, eased height. */}
+            <AnimatedHeight>
+              <ul className="divide-y divide-line">
+                {visible.map((issue) => (
                   <motion.li
-                    key={`${issue.code}-${issue.file ?? ''}-${issue.skill ?? ''}-${index}`}
+                    key={`${issue.code}-${issue.file ?? ''}-${issue.skill ?? ''}-${issue.message}`}
                     layout="position"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.22 }}
                   >
                     <IssueRow issue={issue} />
                   </motion.li>
                 ))}
-              </AnimatePresence>
-            </ul>
+              </ul>
+            </AnimatedHeight>
           </Card>
         </>
       )}
