@@ -20,6 +20,7 @@ import { OptInBadge } from '@/components/skill/SkillRow';
 import { Button } from '@/components/ui/button';
 import { TabPanel, Tabs } from '@/components/ui/tabs';
 import { Tooltip } from '@/components/ui/tooltip';
+import { cn } from '@/lib/cn';
 import { useCatalog, useSkill } from '@/lib/queries';
 
 import { DetailsPanel } from './DetailsPanel';
@@ -28,6 +29,11 @@ import { HistoryTab } from './HistoryTab';
 import { InstructionsTab } from './InstructionsTab';
 
 const TABS = ['instructions', 'files', 'source', 'history'] as const;
+
+/** A tab panel that fills the rest of the reading pane on desktop. */
+const PANE = 'pt-6 xl:flex xl:min-h-0 xl:flex-1 xl:flex-col';
+/** Panels without their own scrolling card scroll as a whole. */
+const SCROLLS = 'xl:overflow-y-auto';
 type Tab = (typeof TABS)[number];
 
 export function SkillPage() {
@@ -96,11 +102,19 @@ export function SkillPage() {
         <p className="text-[14px] leading-relaxed text-ink">{skill.description || 'No description.'}</p>
       </div>
 
-      <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_288px]">
-        <div className="min-w-0">
+      {/*
+        Reading pane (desktop). Tabs, document and side rail form one block exactly one
+        viewport tall, so the page scrolls until the tabs reach the top and stops there;
+        from then on only the document scrolls, inside its card, while the rail stays put.
+        The negative bottom margin cancels the shell's page padding so the pane can rest
+        flush at the top. Below xl the rail stacks underneath and everything flows normally.
+      */}
+      <div className="grid gap-10 xl:-mb-24 xl:h-[calc(100dvh-24px)] xl:grid-cols-[minmax(0,1fr)_288px] xl:pb-6">
+        <div className="flex min-w-0 flex-col xl:min-h-0">
           <Tabs
             value={tab}
             onValueChange={setTab}
+            className="flex flex-col xl:min-h-0 xl:flex-1"
             items={[
               { value: 'instructions', label: 'Instructions' },
               { value: 'files', label: 'Files', count: skill.references.length },
@@ -108,25 +122,25 @@ export function SkillPage() {
               { value: 'history', label: 'History', count: skill.history.length },
             ]}
           >
-            <TabPanel value="instructions" className="pt-6">
+            <TabPanel value="instructions" className={PANE}>
               <InstructionsTab skill={skill} />
             </TabPanel>
-            <TabPanel value="files" className="pt-6">
+            <TabPanel value="files" className={cn(PANE, SCROLLS)}>
               <FilesTab skill={skill} />
             </TabPanel>
-            <TabPanel value="source" className="pt-6">
+            <TabPanel value="source" className={cn(PANE, SCROLLS)}>
               <CodeBlock code={skill.raw} label={`${skill.path}/SKILL.md`} />
             </TabPanel>
-            <TabPanel value="history" className="pt-6">
+            <TabPanel value="history" className={cn(PANE, SCROLLS)}>
               <HistoryTab skill={skill} />
             </TabPanel>
           </Tabs>
         </div>
 
-        <aside className="flex flex-col gap-8">
+        <aside className="flex flex-col gap-8 xl:min-h-0 xl:overflow-y-auto xl:pb-2">
           <DetailsPanel skill={skill} />
           {tab === 'instructions' && (
-            <div className="sticky top-10 hidden xl:block">
+            <div className="hidden xl:block">
               <Outline headings={skill.headings} />
             </div>
           )}

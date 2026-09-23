@@ -182,7 +182,7 @@
     color: var(--ink);
     font-weight: 600;
     letter-spacing: -0.015em;
-    scroll-margin-top: 88px;
+    scroll-margin-top: 40px;
     line-height: 1.3;
   }
   .prose h1 {
