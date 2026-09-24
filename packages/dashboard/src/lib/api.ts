@@ -15,8 +15,12 @@ import type {
 export interface ServerInfo {
   name: string;
   version: string;
+  /** The MCP endpoint on the origin this dashboard was loaded from. */
   mcpUrl: string;
-  stdio: { command: string; args: string[] };
+  /** How a local client starts the server itself. Null when hosted (e.g. on Vercel). */
+  stdio: { command: string; args: string[] } | null;
+  /** Whether the server watches the library and streams changes. */
+  live: boolean;
   root: string;
 }
 

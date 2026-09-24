@@ -32,8 +32,8 @@ const { app, mcp } = createApp({
   info: {
     name: SERVER_NAME,
     version: SERVER_VERSION,
-    mcpUrl: `${origin}/mcp`,
     stdio: { command: 'node', args: [stdioEntry] },
+    live: true,
     root: config.root,
   },
 });

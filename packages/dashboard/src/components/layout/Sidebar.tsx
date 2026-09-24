@@ -268,6 +268,11 @@ const LIVE_COPY: Record<LiveState, { label: string; dot: string; hint: string }>
   connecting: { label: 'Connecting', dot: 'bg-warn', hint: 'reconnecting to the server' },
   offline: { label: 'Offline', dot: 'bg-bad', hint: 'the server is not reachable' },
   paused: { label: 'Paused', dot: 'bg-ink-3', hint: 'live updates resume when this tab is visible again' },
+  static: {
+    label: 'Deployed',
+    dot: 'bg-ink-3',
+    hint: 'this is a published copy of the library; redeploy to update it',
+  },
 };
 
 // ─── Pieces ─────────────────────────────────────────────────────────────────

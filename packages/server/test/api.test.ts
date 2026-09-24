@@ -17,8 +17,8 @@ beforeAll(async () => {
     info: {
       name: 'test',
       version: '0.0.0',
-      mcpUrl: 'http://127.0.0.1/mcp',
       stdio: { command: 'node', args: [] },
+      live: true,
       root: fixture.root,
     },
   }).app;
@@ -64,10 +64,43 @@ describe('REST API', () => {
     expect(await (await get('/api/activity')).json()).toEqual([]);
   });
 
+  it('builds the MCP URL from the origin the client reached', async () => {
+    const mcpUrl = async (headers: Record<string, string> = {}) =>
+      ((await (await get('/api/server', headers)).json()) as { mcpUrl: string }).mcpUrl;
+    expect(await mcpUrl()).toBe('http://127.0.0.1/mcp');
+    expect(await mcpUrl({ 'x-forwarded-host': 'skills.example.com', 'x-forwarded-proto': 'https' })).toBe(
+      'https://skills.example.com/mcp',
+    );
+  });
+
   it('rejects requests from foreign hosts (DNS rebinding protection)', async () => {
     const response = await app.request('http://evil.example/api/catalog', {
       headers: { host: 'evil.example' },
     });
     expect(response.status).toBe(403);
+  });
+});
+
+describe('REST API on a hosted, unwatched library', () => {
+  it('offers no stdio command and ends the events stream at once', async () => {
+    const fixture = await createFixture();
+    try {
+      const hosted = createApp({
+        library: new SkillLibrary({ root: fixture.root }),
+        host: 'skills.example.com',
+        info: { name: 'test', version: '0.0.0', stdio: null, live: false, root: fixture.root },
+      }).app;
+      const request = (path: string) =>
+        hosted.request(`https://skills.example.com${path}`, { headers: { host: 'skills.example.com' } });
+
+      expect(await (await request('/api/server')).json()).toMatchObject({
+        stdio: null,
+        live: false,
+        mcpUrl: 'https://skills.example.com/mcp',
+      });
+      expect((await request('/api/events')).status).toBe(204);
+    } finally {
+      await fixture.cleanup();
+    }
   });
 });

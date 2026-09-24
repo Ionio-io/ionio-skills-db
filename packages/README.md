@@ -72,6 +72,17 @@ It follows **progressive disclosure**: agents see a small catalog first, load a 
 
 The server only reads the library. On a local bind it rejects requests whose `Host` or `Origin` header isn't local. There is no authentication, so before exposing it beyond localhost, put it behind something that adds authentication.
 
+## Deploying to Vercel
+
+`vercel.json` deploys the whole thing as one project: import the repository in Vercel and deploy, with no settings to change.
+
+- **Dashboard.** `npm run build` runs on Vercel, and the built dashboard (`packages/dashboard/dist`) is served as static files. Unknown paths fall back to `index.html` for client-side routes.
+- **API and MCP.** `api/index.js` is a single function that runs `packages/server/src/bin/vercel.ts`. `/api/*` and `/mcp` are rewritten to it, so the MCP endpoint is `https://<your-domain>/mcp`.
+- **The MCP URL follows the domain.** `/api/server` builds it from the host each request arrived on, so the dashboard's Connect page and Overview card always show the address you opened it at: the `.vercel.app` URL, a preview URL, or a custom domain. Locally it is still `http://127.0.0.1:4711/mcp`.
+- **The library ships with the function.** `includeFiles` bundles the root `package.json` and Markdown files and every top-level folder except `api`, `packages`, `node_modules` and those starting with `.` or `_`. New departments are picked up with no config change.
+- **A deployment is a snapshot.** Nothing is watched and there is no stdio command, so the dashboard shows *Deployed* instead of *Live* and offers HTTP setups only. Push to redeploy. Git history isn't available at runtime, so Activity and "last changed" dates are empty.
+- **Access.** The deployment is public: anyone with the URL can read every skill. Vercel's Deployment Protection covers preview URLs by default, and MCP clients can't get through it, so connect agents to the production domain. Set `ALLOWED_HOSTS` only if you want to pin the accepted hostnames.
+
 ## How it works
 
 - **Discovery is structural.** A top-level folder is a department once it has a `README.md` or a skill. A skill is any `<department>/<skill>/SKILL.md`; every other file in that folder is bundled with it. Folders named `packages`, `node_modules`, `dist` or `coverage`, and anything starting with `.` or `_`, are ignored.

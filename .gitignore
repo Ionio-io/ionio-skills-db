@@ -7,6 +7,9 @@ dist/
 *.tsbuildinfo
 coverage/
 
+# Vercel CLI (project link and local `vercel build` output)
+.vercel/
+
 # Local screenshots from UI verification
 .screenshots/
 
