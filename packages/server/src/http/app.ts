@@ -35,7 +35,9 @@ export interface SkillsApp {
 }
 
 export function createApp({ library, info, host, allowedHosts, dashboardDir }: AppOptions): SkillsApp {
-  const app = createMcpHonoApp({ host, allowedHosts });
+  // Hosts allowed in `Host` are also allowed in `Origin`, so a browser on a tunnel or
+  // proxy hostname can load the dashboard (module scripts send Origin) and call /mcp.
+  const app = createMcpHonoApp({ host, allowedHosts, allowedOrigins: allowedHosts });
 
   // ─── MCP ──────────────────────────────────────────────────────────────────
   // A fresh server per request: stateless, so it always reflects the current library.

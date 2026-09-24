@@ -4,7 +4,7 @@
  *   SKILLS_ROOT   folder holding the departments   (default: this repository's root)
  *   HOST          interface the HTTP server binds  (default: 127.0.0.1, local only)
  *   PORT          HTTP port                        (default: 4711)
- *   ALLOWED_HOSTS comma-separated hostnames to accept when HOST is not local
+ *   ALLOWED_HOSTS comma-separated hostnames to accept in Host and Origin headers
  */
 import { readFileSync } from 'node:fs';
 import path from 'node:path';

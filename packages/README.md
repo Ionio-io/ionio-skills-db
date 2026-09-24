@@ -68,7 +68,7 @@ It follows **progressive disclosure**: agents see a small catalog first, load a 
 | `SKILLS_ROOT` | repository root | Folder that holds the departments. Point it elsewhere to serve another library |
 | `PORT` | `4711` | HTTP port |
 | `HOST` | `127.0.0.1` | Bind address. Local only by default |
-| `ALLOWED_HOSTS` | none | Comma-separated hostnames to accept when `HOST` is not local (DNS-rebinding protection) |
+| `ALLOWED_HOSTS` | none | Comma-separated hostnames to accept in the `Host` and `Origin` headers, replacing the local-only check (DNS-rebinding protection). Set it when serving through a tunnel or proxy |
 
 The server only reads the library. On a local bind it rejects requests whose `Host` or `Origin` header isn't local. There is no authentication, so before exposing it beyond localhost, put it behind something that adds authentication.
 
