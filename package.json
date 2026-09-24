@@ -1,0 +1,39 @@
+{
+  "name": "ionio-skills-db",
+  "private": true,
+  "description": "Ionio's skills library: content, an MCP server that serves it, and a dashboard to browse it.",
+  "type": "module",
+  "workspaces": [
+    "packages/core",
+    "packages/server",
+    "packages/dashboard"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n server,web -c blue,magenta \"npm:dev -w @ionio-skills/server\" \"npm:dev -w @ionio-skills/dashboard\"",
+    "build": "npm run build -w @ionio-skills/core -w @ionio-skills/server -w @ionio-skills/dashboard",
+    "start": "npm start -w @ionio-skills/server",
+    "mcp": "node packages/server/dist/bin/stdio.js",
+    "test": "vitest run",
+    "typecheck": "npm run typecheck --workspaces",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "check": "npm run typecheck && npm run lint && npm test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.13.6",
+    "concurrently": "^10.0.5",
+    "eslint": "^10.11.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.12.0",
+    "playwright-core": "^1.63.0",
+    "prettier": "^3.9.9",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.70.1",
+    "vitest": "^5.0.1"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "customConditions": ["ionio-source"],
+    "noEmit": true
+  },
+  "include": ["src", "test"]
+}

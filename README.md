@@ -46,7 +46,7 @@ Ionio's library of Claude skills, sorted by business area. Each top-level folder
         └── <file>.md
 ```
 
-Each skill folder follows the standard Claude skill format, so you can drop it straight into `~/.claude/skills/` or upload it to Claude.ai as-is.
+Each skill folder follows the standard Claude skill format, so you can drop it straight into `~/.claude/skills/` or upload it to Claude.ai as-is. The `packages/` folder holds tooling, not skills.
 
 ## Adding a skill
 
@@ -55,6 +55,10 @@ Each skill folder follows the standard Claude skill format, so you can drop it s
 3. **Put supporting files in `references/`.** Skills refer to them by relative path (`references/<file>.md`). A source file named `<skill>--<thing>.md` becomes `<skill>/references/<thing>.md`.
 4. **Update the ledgers.** Add a row to the department `README.md` and to the tables above (including the counts).
 5. **Archive the source.** Put the original upload (zip, etc.) in `_imports/`. Zips are gitignored, so they stay on your machine only.
+
+## Dashboard and MCP server
+
+This repo also serves the library. The **dashboard** is for people, and the **MCP server** lets agents list, search and load skills. Run `npm install && npm run dev`, then open http://localhost:5173. Setup, commands and architecture are in [packages/README.md](packages/README.md).
 
 ## Import log
 
