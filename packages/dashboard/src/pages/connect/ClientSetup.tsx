@@ -2,6 +2,7 @@
  * Copy-paste setup for common MCP clients. Two ways in:
  *   HTTP   point the client at this server's /mcp URL (the server must be running)
  *   stdio  let the client launch the server itself (needs `npm run build` once)
+ * A hosted server (Vercel) has no stdio command, so only the HTTP setups are shown.
  */
 import { useState } from 'react';
 
@@ -17,32 +18,42 @@ interface Snippet {
 }
 
 function snippetsFor(server: ServerInfo): Record<string, { label: string; snippets: Snippet[] }> {
-  const stdioArgs = server.stdio.args.map((arg) => JSON.stringify(arg)).join(', ');
-  const stdioCommand = [server.stdio.command, ...server.stdio.args].join(' ');
+  const { stdio } = server;
+  const http: Snippet = {
+    title: 'Over HTTP',
+    note: stdio
+      ? 'Uses the running server. Add --scope user to make it available in every project.'
+      : 'Add --scope user to make it available in every project.',
+    code: `claude mcp add --transport http ${server.name} ${server.mcpUrl}`,
+  };
   return {
     'claude-code': {
       label: 'Claude Code',
-      snippets: [
-        {
-          title: 'Over HTTP',
-          note: 'Uses the running server. Add --scope user to make it available in every project.',
-          code: `claude mcp add --transport http ${server.name} ${server.mcpUrl}`,
-        },
-        {
-          title: 'Over stdio',
-          note: 'Claude Code starts the server itself, so nothing needs to be running.',
-          code: `claude mcp add ${server.name} -- ${stdioCommand}`,
-        },
-      ],
+      snippets: stdio
+        ? [
+            http,
+            {
+              title: 'Over stdio',
+              note: 'Claude Code starts the server itself, so nothing needs to be running.',
+              code: `claude mcp add ${server.name} -- ${[stdio.command, ...stdio.args].join(' ')}`,
+            },
+          ]
+        : [http],
     },
     'claude-desktop': {
       label: 'Claude Desktop',
       snippets: [
-        {
-          title: 'claude_desktop_config.json',
-          note: 'Settings → Developer → Edit Config, then restart Claude Desktop.',
-          code: `{\n  "mcpServers": {\n    "${server.name}": {\n      "command": "${server.stdio.command}",\n      "args": [${stdioArgs}]\n    }\n  }\n}`,
-        },
+        stdio
+          ? {
+              title: 'claude_desktop_config.json',
+              note: 'Settings → Developer → Edit Config, then restart Claude Desktop.',
+              code: `{\n  "mcpServers": {\n    "${server.name}": {\n      "command": "${stdio.command}",\n      "args": [${stdio.args.map((arg) => JSON.stringify(arg)).join(', ')}]\n    }\n  }\n}`,
+            }
+          : {
+              title: 'Custom connector',
+              note: 'Settings → Connectors → Add custom connector, then paste this URL.',
+              code: server.mcpUrl,
+            },
       ],
     },
     cursor: {
@@ -59,7 +70,9 @@ function snippetsFor(server: ServerInfo): Record<string, { label: string; snippe
       snippets: [
         {
           title: 'Streamable HTTP endpoint',
-          note: 'Any MCP client library can connect here. Local only by default; set HOST and ALLOWED_HOSTS to expose it.',
+          note: stdio
+            ? 'Any MCP client library can connect here. Local only by default; set HOST and ALLOWED_HOSTS to expose it.'
+            : 'Any MCP client library can connect here. It is public: anyone with the URL can read the library.',
           code: server.mcpUrl,
         },
         {

@@ -10,13 +10,15 @@ import { Outlet, ScrollRestoration, useLocation } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import { useLiveUpdates } from '@/lib/live';
+import { useServerInfo } from '@/lib/queries';
 import { SIDEBAR_WIDTH, useSidebarCollapsed } from '@/lib/sidebar';
 
 import { CommandPalette } from './CommandPalette';
 import { Sidebar } from './Sidebar';
 
 export function AppShell() {
-  const live = useLiveUpdates();
+  const { data: server } = useServerInfo();
+  const live = useLiveUpdates(server?.live);
   const { pathname } = useLocation();
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);

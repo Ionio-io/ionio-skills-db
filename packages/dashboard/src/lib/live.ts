@@ -1,7 +1,8 @@
 /**
  * Live updates: listens to the server's `/api/events` stream and refetches all
  * library data when skill files change on disk. Exposes connection state so the
- * shell can show whether the dashboard is live.
+ * shell can show whether the dashboard is live. A hosted deployment (Vercel) serves
+ * a fixed copy of the library, so there is nothing to listen to: that is 'static'.
  */
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
@@ -9,13 +10,15 @@ import { toast } from 'sonner';
 
 import { keys } from './queries';
 
-export type LiveState = 'connecting' | 'live' | 'offline' | 'paused';
+export type LiveState = 'connecting' | 'live' | 'offline' | 'paused' | 'static';
 
-export function useLiveUpdates(): LiveState {
+/** `watched` is the server's `live` flag, undefined until the server info loads. */
+export function useLiveUpdates(watched: boolean | undefined): LiveState {
   const queryClient = useQueryClient();
   const [state, setState] = useState<LiveState>(() => (document.hidden ? 'paused' : 'connecting'));
 
   useEffect(() => {
+    if (!watched) return;
     let source: EventSource | null = null;
 
     function open() {
@@ -62,7 +65,7 @@ export function useLiveUpdates(): LiveState {
       document.removeEventListener('visibilitychange', onVisibilityChange);
       close();
     };
-  }, [queryClient]);
+  }, [queryClient, watched]);
 
-  return state;
+  return watched === false ? 'static' : state;
 }
