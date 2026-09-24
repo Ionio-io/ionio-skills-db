@@ -1,11 +1,13 @@
 ---
 name: graphic-design-tactics
-description: Rules for multi-page graphics (carousels, one-pagers, slide decks) produced in this repository, taken from the user's reviews of generated output. Use whenever composing or reviewing any article-derived graphic, before rendering.
+description: Composition rules for multi-page graphics (carousels, one-pagers, slide decks), taken from a reviewer's feedback on generated output, with a review checklist and a log that grows after every review. Use whenever composing or reviewing any article-derived graphic, before rendering and again on the contact sheet.
 ---
 
 # Graphic design tactics
 
 Rules the user has given on generated graphics, most recent review first. Each rule records what was seen, what the user said, and how to apply it. Add to this file after every review; do not soften a rule to fit a draft.
+
+Two inputs come from the user, not from this file: the brand palette (with what each colour means) and their own logo file. If you do not have them, ask. If there is no palette, define a role-to-colour mapping at the start of the deck (dark anchor, "current state / our side", "warning / other party", brand elements) and keep it fixed; rules 3, 5, 9 and 17 depend on it.
 
 ## 1. One background per deck
 
@@ -33,8 +35,8 @@ Seen: pages of cream, pale lavender, pale gold and grey text with nothing dark o
 
 Apply:
 
-- Every page carries at least one high-contrast element: a dark inverted card, a saturated headline word, a solid indigo or orange chip, a strong bar, a large dark display number.
-- The palette needs a dark anchor (ink or the deep indigo) and one accent that is visibly saturated at display size. Pastel highlights alone do not count.
+- Every page carries at least one high-contrast element: a dark inverted card, a saturated headline word, a solid accent-colour chip, a strong bar, a large dark display number.
+- The palette needs a dark anchor (ink or the brand's deepest colour) and one accent that is visibly saturated at display size. Pastel highlights alone do not count.
 - Check at thumbnail scale. If the page reads as one flat tone, it fails.
 - Do not "fix" flatness by rotating colours decoratively between slides. Colour carries meaning (see 5); contrast comes from value, not from more hues.
 
@@ -46,16 +48,16 @@ Apply:
 
 - Any product, tool, or service named in a graphic appears with its actual logo mark next to the name, at a consistent size across the deck.
 - Fetch the mark from the vendor's own brand or press page, keep the file locally under the output folder with a note of the source URL and date, and use the mark as the vendor supplies it (no recolouring, no stretching). Downloading a file needs the user's go-ahead; ask once per batch.
-- Our own logo is on every page (the official favicon at `public/demo/ionio-logo.png`). Keep it there.
+- Your own logo (the user's official mark, supplied by them; ask for the file if you do not have it) is on every page, in the same position and size. Keep it there.
 - A text-only chip for a brand reads as unfinished.
 
 ## 5. Colour use follows meaning
 
-Carried from the imported kit and confirmed by the user's review: colour should carry the argument, not decorate.
+Carried from the original design kit and confirmed by the user's review: colour should carry the argument, not decorate.
 
 Apply:
 
-- Give each accent a job for the deck and keep it: for the Ionio technical palette, indigo for the current state or our side, orange for warnings or the other party, gold for brand elements only (wordmark, page numbers, line strokes, hero numbers).
+- Give each accent a job for the deck and keep it. Use the user's brand palette and the meanings they give it; if they have none, define the mapping yourself before the first page and do not change it. For example, with a fictional palette of teal, amber and brass: teal for the current state or our side, amber for warnings or the other party, brass for brand elements only (wordmark, page numbers, line strokes, hero numbers).
 - The same thing is the same colour on every page.
 - One inverted dark card per deck is the anchor; do not multiply it.
 
@@ -76,7 +78,7 @@ Seen: a four-item list where the first two items had logos (draw.io, Figma) and 
 
 Apply:
 
-- If one item in a list, flow, or grid has a logo, every item has a mark: a logo where a product is named, a neutral glyph otherwise. Use the glyph set in the output's `icons.js` or add one.
+- If one item in a list, flow, or grid has a logo, every item has a mark: a logo where a product is named, a neutral glyph otherwise. Use the project's icon set if it has one; otherwise draw a small set of matching line glyphs (same stroke, same grid) and reuse it.
 - Marks sit in the same position and size on every item.
 - If you cannot give every item a mark, remove the marks from all of them. Mixed is the failure.
 
@@ -92,7 +94,7 @@ Apply:
 
 - Look at every chart as a viewer would, at thumbnail scale. A quantity that is full must read as full: solid, dark. Pale hatch on a pale track reads as nothing.
 - When the empty space is a gain (time saved, cost removed), fill it and say so: green stripes labelled "time gained", with a legend. Do not leave a positive result looking like an absence.
-- Colour on charts follows meaning: ink or indigo for what was spent, indigo for what it takes now, green for what was gained.
+- Colour on charts follows meaning: ink for what was spent, the deck's "current state" colour for what it takes now, green for what was gained.
 
 ## 10. Lines only where their ends are hidden
 
@@ -109,7 +111,7 @@ Apply:
 
 Seen: the mesh background read as flat and "wavy" even after the first contrast pass.
 
-Apply: when a background needs more presence, raise the glow and mesh strengths, then add a dither pass (Bayer, a few tones from indigo to cream, at half strength) so the surface has visible texture. Keep text-bearing regions light.
+Apply: when a background needs more presence, raise the glow and mesh strengths, then add a dither pass (Bayer, a few tones from the palette's dark brand colour to the paper colour, at half strength) so the surface has visible texture. Keep text-bearing regions light.
 
 ## 12. Figures never wrap
 
@@ -119,13 +121,13 @@ Apply: a stat, price, date or figure sits on one line, always. Size it down or s
 
 ## 13. Underline, do not shade; keep phrases whole
 
-Seen: an orange solid block behind "Repricing" so tall it cut into the line above, and a shaded phrase in every title of the deck. The user: an orange underline would have been better; the block is too aggressive; do not use the background shading of specific words unless it is really needed, and do not overuse these tactics.
+Seen: an orange solid block behind "Rewrite" so tall it cut into the line above, and a shaded phrase in every title of the deck. The user: an orange underline would have been better; the block is too aggressive; do not use the background shading of specific words unless it is really needed, and do not overuse these tactics.
 
 Apply:
 
-- Default title treatment is plain ink. If one phrase needs emphasis, use a thin orange underline. Solid blocks behind words are the exception, not the system.
+- Default title treatment is plain ink. If one phrase needs emphasis, use a thin underline in one accent colour. Solid blocks behind words are the exception, not the system.
 - One emphasised phrase in a deck is plenty; never one per slide.
-- A title breaks between phrases, never inside one: "The Great Repricing" on one line, "of agency work" on the next. Set the breaks by hand.
+- A title breaks between phrases, never inside one: "The Slow Rewrite" on one line, "of the sales playbook" on the next. Set the breaks by hand.
 - Nothing decorative may overlap a neighbouring line of type.
 
 ## 14. The background is felt on the whole page
@@ -148,7 +150,7 @@ Apply: the structure of a slide follows its content. A giant figure where the fa
 
 ## 17. Volume
 
-Seen: shading, orange, indigo and a strong effect on every slide. The user: slightly too loud in terms of colours and how the shades are used everywhere.
+Seen: shading, both accent colours and a strong effect on every slide. The user: slightly too loud in terms of colours and how the shades are used everywhere.
 
 Apply: accent colours belong to data and to one emphasis per deck. Titles and body stay ink or cream. The background effect can be rich; the type over it stays quiet.
 
@@ -160,7 +162,7 @@ Seen: a 150 px "3 BC" and a 150 px "10-15" opening two slides. The user: it is b
 
 Apply:
 
-- Display size is for a phrase or figure a reader understands with no other text: "TWO PEOPLE. ONE CHANNEL.", "WHERE DID THE DESIGN PHASE GO?", "$50K to $20K".
+- Display size is for a phrase or figure a reader understands with no other text: "TWO PEOPLE. ONE CHANNEL.", "WHO STILL WRITES THE FIRST DRAFT?", "$50K to $20K".
 - A number that needs the sentence to mean anything belongs in the sentence: "Ten to fifteen prompts to a demo-grade product", not "10-15" over a caption. An in-joke label like "3 BC" is not a headline; cut it or work it into the line.
 - Remove the number rather than shrink it when the title already says everything.
 
@@ -172,30 +174,30 @@ Apply: set the breaks by hand with `<br>` and cap the heading's max-width, then 
 
 ## 20. The background disappears behind long copy, and readability is measured
 
-Seen: the OpenAI cost one-pagers, where a halftone wave and a dithered mesh sat under 4,000 px of body copy, tables and diagrams. The user: the background and the foreground are messing each other up, it is not nice to look at; the background has to basically disappear, a blur field with very few effects; use some measurement to make sure it is readable.
+Seen: two one-pagers from a long article on LLM API costs, where a halftone wave and a dithered mesh sat under 4,000 px of body copy, tables and diagrams. The user: the background and the foreground are messing each other up, it is not nice to look at; the background has to basically disappear, a blur field with very few effects; use some measurement to make sure it is readable.
 
 Apply:
 
 - On a tall page that is mostly type, the background is a blurred colour field: soft tiles or glows, a wide blur, faint grain. No dots, dither, halftone or lines under copy. Contrast (rule 3) comes from ink blocks, bars and rules, not from the backdrop.
-- Measure before showing: render the background bare at page size and score it with `generated/openai-cost-article/measure.py` (WCAG contrast of the body and heading colours against the worst 0.5th percentile of background luminance, plus a texture score, the mean luminance step between neighbouring pixels). Body copy at 7:1 or better and texture under 0.5 passed; the rejected halftone scored 4.6.
+- Measure before showing: render the background bare at page size and score it with a small script (Python with Pillow and NumPy is enough): WCAG contrast of the body and heading colours against the worst 0.5th percentile of background luminance, plus a texture score, the mean luminance step between neighbouring pixels. Keep the script with the output so later passes use the same measure. Body copy at 7:1 or better and texture under 0.5 passed; the rejected halftone scored 4.6.
 - Diagrams get room: full width, tokens and boxes at 30 px or more, one titled panel per idea, one-line captions. A cramped diagram reads as chaos.
 
 ## 21. Facts in a graphic are as current as the render, not the article
 
-Seen: model names and prices from a November 2024 article rendered in September 2026. The user: keep in mind we are at GPT-6; make sure everything is updated with proper new information.
+Seen: model names and prices from a November 2024 article rendered in September 2026. The user: keep in mind which model generation we are at now; make sure everything is updated with proper new information.
 
 Apply: before rendering an article older than a few months on a fast-moving subject, fetch the vendor's current docs and pricing, update the facts, keep the article's own measurements labelled with their date and model, and list in the folder README which claims come from the article and which from the fetch. Never update from memory.
 
 ## 22. Light backgrounds stay calm; red marks a decrease
 
-Seen: the GTM V3 paper carousel, twice. First a coloured grain-gradient through an ordered image dither: "a huge mess". Then the same colours as a 90 px blur field: still chaotic, soft coral and peach blotches that looked blurred to hide the mess. The user asked for "a dithered something" with slight blur instead. The dark dithered-mesh deck was liked throughout.
+Seen: a paper-theme carousel for a go-to-market article, twice. First a coloured grain-gradient through an ordered image dither: "a huge mess". Then the same colours as a 90 px blur field: still chaotic, soft coral and peach blotches that looked blurred to hide the mess. The user asked for "a dithered something" with slight blur instead. The dark dithered-mesh deck was liked throughout.
 
 Apply:
 
-- On a light theme, use a two-tone dither in one quiet colour close to the paper (the Paper dithering wave, sand on cream, 8x8 cells at 3 px), placed so the copy region is nearly clean, with a 1 px blur to soften the cells. No multi-hue blobs, marbling or colour washes. Measured result: heading 12.3:1, body 8.0:1, texture 0.63. Richer dither and colour belong on dark themes.
+- On a light theme, use a two-tone dither in one quiet colour close to the paper (a dithering-wave shader, sand on cream, 8x8 cells at 3 px), placed so the copy region is nearly clean, with a 1 px blur to soften the cells. No multi-hue blobs, marbling or colour washes. Measured result: heading 12.3:1, body 8.0:1, texture 0.63. Richer dither and colour belong on dark themes.
 - Red marks a decrease: a removed step or time cut gets a red segment or red hatch with a red label (−50%, "gone"). Use it only where the data has a decrease; waiting time is grey hatch, not red.
 - A summary graphic (single image) uses the article's most general example. Niche case studies stay in the carousel.
-- For time and process comparisons, a stacked before/now bar works well (the idea from `examples/before-now-bars`): segment widths show time, labels inside, short arrow notes below. Take only the structure from that reference, not its hand-drawn outlined pastel look: draw the segments in the deck's own solid bar style (solid ink, the deck's "now" colour, red hatch for the removed part, grey hatch for waiting) on one rounded track. The outlined version was rejected as an overcorrection.
+- For time and process comparisons, a stacked before/now bar works well (the idea from a reference graphic the user supplied): segment widths show time, labels inside, short arrow notes below. Take only the structure from that reference, not its hand-drawn outlined pastel look: draw the segments in the deck's own solid bar style (solid ink, the deck's "now" colour, red hatch for the removed part, grey hatch for waiting) on one rounded track. The outlined version was rejected as an overcorrection.
 
 ## Review checklist
 
@@ -203,7 +205,7 @@ Run before rendering and again on the contact sheet.
 
 1. Same background and line field on every page?
 2. At least one dark or saturated element on every page?
-3. Every named product shown with its real logo, our logo present?
+3. Every named product shown with its real logo, your own logo present?
 4. Each accent colour means one thing across the deck?
 5. Does the deck read as one document at thumbnail scale?
 6. Any small text above a heading, page meta, or tiny panel caption? Remove it.
@@ -222,16 +224,16 @@ Run before rendering and again on the contact sheet.
 19. Are the facts current for the render date, with article measurements labelled by date and model?
 20. On a light theme, is the background a calm one-colour dither with the copy region nearly clean? Is red used only for a decrease?
 
-Copy inside the graphics is covered separately in [graphic-copy](../graphic-copy/SKILL.md). The effects library and its recipes are in `effects/`; the kit's structural rules (fixed page height, centred content, cards hold one idea) are in `references/imported/editorial-graphics-kit/DESIGN-SYSTEM.md`.
+Copy inside the graphics is covered separately in [graphic-copy](../graphic-copy/SKILL.md). Background recipes come from your effects library or design system, if the project has one. Three structural rules hold regardless: every page in a deck has the same fixed height, content is centred on the page, and each card holds one idea.
 
 ## Review log
 
-- 2026-09-06, first generated carousels and one-pagers from the design-phase article: backgrounds varied per slide, no service logos, flat colour. Rules 1 to 4 written from that review. Output moved to ignored `generated/`.
+- 2026-09-06, first generated carousels and one-pagers from an article on how AI tools changed product design: backgrounds varied per slide, no service logos, flat colour. Rules 1 to 4 written from that review. Output moved out of version control.
 - 2026-09-06, second pass of the same four outputs: one recipe per deck with identical lines, dark markers and solid highlights on every page, vendor logos for five products. Reviewed: approved the direction ("so far so good, very nice"), with rules 6 to 11 added from it.
-- 2026-09-08, design-phase carousel B made publication-ready: the giant "3 BC" and "10-15" removed, the count moved into the sentence, headings rebroken so no word is orphaned, the two solid highlight blocks replaced with one orange underline, brand lockup 20 percent larger. A second version puts the faded old toolchain (draw.io, Figma, Framer, Sketch) on the cover. Rules 18 and 19 written from that review.
-- 2026-09-06, Great Repricing print and night decks (halftone paper, dithered mesh): wrapped figures, shaded title blocks overlapping the line above and used on every slide, background only at the foot, bar fills outside their tracks, a giant figure on every night slide, colours too loud. Rules 12 to 17 written from that review. Copy failures from the same review are in `graphic-copy.md` rules 9 to 11. The user liked the night deck's background and the print deck's colour scheme.
+- 2026-09-08, carousel B from the same article made publication-ready: the giant "3 BC" and "10-15" removed, the count moved into the sentence, headings rebroken so no word is orphaned, the two solid highlight blocks replaced with one orange underline, brand lockup 20 percent larger. A second version puts the faded old toolchain (draw.io, Figma, Framer, Sketch) on the cover. Rules 18 and 19 written from that review.
+- 2026-09-06, print and night decks from an article on agency pricing (halftone paper, dithered mesh): wrapped figures, shaded title blocks overlapping the line above and used on every slide, background only at the foot, bar fills outside their tracks, a giant figure on every night slide, colours too loud. Rules 12 to 17 written from that review. Copy failures from the same review are in [graphic-copy](../graphic-copy/SKILL.md) rules 9 to 11. The user liked the night deck's background and the print deck's colour scheme.
 - 2026-09-06, third pass: logos 15 percent larger, glyphs on every unmarked list item, kickers and page meta removed everywhere, "two weeks" bar solid ink with green "time gained" stripes on the afternoon bar, deck B on sweeps only with a stronger dithered mesh, one-page B without lines. Approved.
-- 2026-09-10, OpenAI cost one-pagers, first pass: halftone and dithered-mesh backgrounds under long copy rejected as fighting the type; a cramped decoding diagram; a "five smaller settings" line; 2024 model names and prices. Second pass: blurred fields measured with measure.py, full-width diagram, vendor marks for OpenAI, Claude and Gemini at the top, facts refetched from OpenAI docs. Rules 20 and 21 written from that review.
-- 2026-09-23, GTM V3 carousel and single image (ink and paper): the paper dither rejected as messy, replaced with a blur field; ink carousel and the dark single image liked; RFQ bars on the single image replaced with the article's generic halved-video example; red added for the decrease. Rule 22 written from that review.
-- 2026-09-23, GTM V3 third pass: the blur field was also rejected as chaotic; the paper deck moved to a sand-on-cream dithered wave with a 1 px blur, and slides 1 and 4 now use segmented before/now bars after the user's reference graphic. Rule 22 rewritten.
-- 2026-09-23, GTM V3 fourth pass: the user meant the stacked-bar idea, not the reference's styling; bars returned to solid fills on a rounded track. The example cut changed from 50 to 30 percent at the user's request.
+- 2026-09-10, the LLM API cost one-pagers, first pass: halftone and dithered-mesh backgrounds under long copy rejected as fighting the type; a cramped decoding diagram; a "five smaller settings" line; 2024 model names and prices. Second pass: blurred fields measured with the contrast-and-texture script, full-width diagram, vendor marks for the three model providers at the top, facts refetched from the vendor's docs. Rules 20 and 21 written from that review.
+- 2026-09-23, go-to-market carousel and single image (ink and paper): the paper dither rejected as messy, replaced with a blur field; ink carousel and the dark single image liked; niche case-study bars on the single image replaced with the article's generic halved-video example; red added for the decrease. Rule 22 written from that review.
+- 2026-09-23, go-to-market third pass: the blur field was also rejected as chaotic; the paper deck moved to a sand-on-cream dithered wave with a 1 px blur, and slides 1 and 4 now use segmented before/now bars after the user's reference graphic. Rule 22 rewritten.
+- 2026-09-23, go-to-market fourth pass: the user meant the stacked-bar idea, not the reference's styling; bars returned to solid fills on a rounded track. The example cut changed from 50 to 30 percent at the user's request.

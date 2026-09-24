@@ -21,14 +21,8 @@ Run [claudisms](../editorial/claudisms/SKILL.md) over every string in the graphi
 
 Both skills have a **Review log** at the bottom. Add an entry after each user review.
 
-## Dependencies
+## Inputs
 
-These skills mention paths inside the **`ionio-graphic-skillset`** repo, where the graphics are actually made. Those paths don't exist in this repo:
+Both skills are brand-neutral. **graphic-design-tactics** asks for your brand palette (with what each colour means) and your logo file; without a palette, it defines a role-to-colour mapping and keeps it fixed. Neither skill depends on files outside this repo.
 
-- `effects/`: effects library and recipes
-- `public/demo/ionio-logo.png`: the Ionio logo used on every page
-- `icons.js`: the glyph set in each output
-- `references/imported/editorial-graphics-kit/DESIGN-SYSTEM.md`: structural rules from the design kit
-- `AGENTS.md`: repo-wide agent rules (including "never invent evidence")
-
-*Source: `ionio-graphic-skillset/skills/general-skills` @ `d091955`. The only change: in graphic-design-tactics, the link to graphic-copy now points to its new location.*
+*Source: `ionio-graphic-skillset/skills/general-skills` @ `d091955`. Since import, both skills have been made generic: Ionio's palette, logo, internal file paths, and project and people names were replaced with inputs or neutral descriptions. Every rule and review-log lesson is kept.*

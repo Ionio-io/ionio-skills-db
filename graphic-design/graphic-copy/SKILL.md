@@ -5,7 +5,7 @@ description: Rules for the words inside graphics (slide titles, card copy, panel
 
 # Graphic copy
 
-Copy in a graphic is read faster and judged harder than prose. The Claudisms banlist applies in full. These rules add what the user has flagged specifically in slides and cards.
+Copy in a graphic is read faster and judged harder than prose. The [Claudisms banlist](../../editorial/claudisms/SKILL.md) applies in full. These rules add what the user has flagged specifically in slides and cards.
 
 ## 1. No invented vignettes
 
@@ -14,7 +14,7 @@ Seen: a panel that turned "feedback at night, changed by breakfast" into a three
 Apply:
 
 - Do not stage a little scene to dramatise a plain fact: times of day, meals, a diary rhythm, characters going about their morning.
-- Do not invent specifics the source does not contain. Clock times, counts, and durations that were not in the article are fabrication, even when they feel illustrative. The Hopkins rule and the AGENTS.md rule are the same: never invent evidence to fit a design.
+- Do not invent specifics the source does not contain. Clock times, counts, and durations that were not in the article are fabrication, even when they feel illustrative. Never invent evidence to fit a design: if the layout wants a number the source does not have, change the layout, not the facts. This is the same rule as in [Hopkins copywriting](../../copywriting/hopkins-copywriting/SKILL.md): never invent a statistic, process detail, testimonial or claim.
 - State the fact in the article's own words. "Feedback comes in overnight. The new version is live before their morning." One line, no panel.
 
 ## 2. A panel needs data
@@ -43,7 +43,7 @@ A hard rule from the user: no small line of text above a heading, anywhere. Do n
 
 ## 8. Closers that lean on a person
 
-Seen: "Mannan's title doesn't say design." used as a closing line in every output. The user asked for it to be removed everywhere: it sounds off. Do not end on a quip about a named colleague's job title or role. End on the claim.
+Seen: "Dana's title doesn't say design." (Dana being a colleague mentioned in the article) used as a closing line in every output. The user asked for it to be removed everywhere: it sounds off. Do not end on a quip about a named colleague's job title or role. End on the claim.
 
 ## 9. Carousels are factual; narrative devices stay in the article
 
@@ -57,7 +57,7 @@ Apply:
 
 ## 10. The hook delivers information
 
-Seen: "The Great Repricing of agency work. Your retainer hasn't noticed." The user: what does that mean? It delivers no information, it just opens questions. Not a hook.
+Seen: "The Great Reset of agency work. Your retainer hasn't noticed." The user: what does that mean? It delivers no information, it just opens questions. Not a hook.
 
 Apply: the first slide states the main fact in full: what changed, by how much, and what it means for the reader. "Agency deliverables now cost 10x to 100x less to produce. Most retainers are still priced at the old cost." A teaser that withholds the fact is not a hook.
 
@@ -92,6 +92,6 @@ Apply:
 ## Review log
 
 - 2026-09-06: the breakfast/night/morning panel in the first generated carousel. Rule 1 written from that review; also added to the Claudisms banlist under structural tics. Second pass replaced the panel with the article's sentence and removed invented durations ("days", "weeks", "next day") from pipeline rows.
-- 2026-09-06, Great Repricing print and night decks: narrative devices lifted from the article (haunted-house omens, the 1826 quartet, "fifth example"), a teaser hook, copy built by quoting the article rather than extracting from it. Rules 9 to 11 written from that review; rule 4 rewritten.
-- 2026-09-06, second review: kicker lines above headings banned outright (rule 7); "Mannan's title doesn't say design" removed from all outputs and the article (rule 8). Third pass approved.
-- 2026-09-10, OpenAI cost one-pagers: "Four habits decide whether you get the hit", "lives 30 minutes", "stopped at". The user asked for long, direct, literal headings and supplied a note on mannered prose, now in the Claudisms banlist. Rule 12 written from that review. Also asked: only current models (GPT-5.6, GPT-6, Claude Opus, Gemini), Claude and Gemini numbers alongside OpenAI's, and a footer with just the blog URL and the article title.
+- 2026-09-06, a print deck and a dark-theme deck on agency pricing: narrative devices lifted from the article (haunted-house omens, the 1826 quartet, "fifth example"), a teaser hook, copy built by quoting the article rather than extracting from it. Rules 9 to 11 written from that review; rule 4 rewritten.
+- 2026-09-06, second review: kicker lines above headings banned outright (rule 7); the closing quip about a named colleague's job title removed from all outputs and the article (rule 8). Third pass approved.
+- 2026-09-10, one-pagers on LLM API costs: "Four habits decide whether you get the hit", "lives 30 minutes", "stopped at". The user asked for long, direct, literal headings and supplied a note on mannered prose, now in the Claudisms banlist. Rule 12 written from that review. Also asked: name only current products and models (drop superseded versions), show competitors' numbers alongside the main vendor's rather than one vendor alone, and a footer with just the source article's URL and title.

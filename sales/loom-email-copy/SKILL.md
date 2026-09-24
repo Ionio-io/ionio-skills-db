@@ -1,6 +1,6 @@
 ---
 name: loom-email-copy
-description: Draft raw, visceral outbound cold email copy for personalized Loom videos sent to CEOs of mid-market e-commerce SaaS companies. Use this skill whenever someone asks to write outbound email copy, draft a cold email for a Loom, write copy for a Loom video, create outbound emails for SaaS CEOs, or anything involving "loom email", "outbound copy", "cold email for loom", "email angle", "draft the email", "write the copy for the loom". Also trigger when someone provides a Loom transcript and asks for email copy, or when they mention Rohan, Ionio, post-purchase, returns space, e-commerce SaaS outbound. This skill is specifically for short, punchy cold emails that tease a personalized Loom recording — NOT for long-form sales emails, newsletters, or follow-ups.
+description: Draft raw, visceral outbound cold email copy that teases a personalized Loom (or any screen-recorded video breakdown) made for one specific prospect, usually a CEO or founder, in any B2B market. Use this skill whenever someone asks to write outbound email copy, draft a cold email for a Loom, write copy for a Loom video, create outbound emails that link a personalized video, or anything involving "loom email", "outbound copy", "cold email for loom", "email angle", "draft the email", "write the copy for the loom". Also trigger when someone provides a Loom or video transcript and asks for the email to send with it. Works for any sender and any target market; the sender, the space and the prospect's context are inputs. This skill is specifically for short, punchy cold emails that tease a personalized recording, NOT for long-form sales emails, newsletters, or follow-ups.
 ---
 
 # Loom Email Copy Generator
@@ -11,9 +11,14 @@ The goal: get the CEO to click the Loom link. That's it. Not to sell. Not to pit
 
 ## What You'll Receive
 
-1. **Loom transcript** — the recording Rohan made for this specific company. This contains the actual insights, competitive analysis, and opportunities discussed.
+1. **Loom transcript** — the recording the sender made for this specific company. This contains the actual insights, competitive analysis, and opportunities discussed.
 2. **Company audit** (optional) — research on the target company, their competitors, funding, product lines, market position.
 3. **Target person** — name, title, company. Sometimes other decision-makers at the company who should be name-dropped.
+4. **Sender** — the name the email is signed with, and what they/their company do. What they do never goes in the email (no credentials), but it sets the Loom's focus and the subject line.
+5. **The space** — the target company's market, in the words its CEO would use ("the fleet ops space", "the AP automation space"). Used in the opening hook.
+6. **Focus word** — one word for what the Loom is about, usually tied to what the sender does (e.g. "ai" if the Loom breaks down AI opportunities). Ends the subject line.
+
+Take these from the user or the conversation context. If the sender's name, the space, or the focus word is missing and can't be inferred from the transcript, ask before drafting. Never invent a sender name.
 
 ## How to Process the Inputs
 
@@ -42,27 +47,27 @@ Here are the proven angles ranked by effectiveness:
 **ANGLE 1: "You Pioneered, They're Copying" (highest reply rate)**
 Use when: the company invented something and competitors are now replicating it.
 Structure: You built X → [Competitor] copied it → you're now leading on [new thing] → the pattern will repeat → here's how to make it permanent.
-Example trigger: Redo pioneered consumer-paid returns. Loop copied with Offset. Now Redo leads on AI.
+Example trigger: Axlewise pioneered insurer-paid driver scoring. Routelyne copied it with SafeScore. Now Axlewise leads on AI.
 
 **ANGLE 2: "Category Gaps" (high share rate)**
 Use when: competitors are raising big money or startups are building features that should logically be inside the target company's product.
 Structure: [Competitor] just raised $X / rebranded to [vision] → startups are building [thing] that should be YOUR feature → here's what we see.
-Example trigger: Swap raised $100M. Returnalyze and Pinch AI raised money building features Loop should own.
+Example trigger: Clearbill raised $120M. InvoiceSense and MatchBot raised money building features Payvine should own.
 
 **ANGLE 3: "David vs Goliaths" (works for smaller companies)**
 Use when: the company is smaller but has a full-stack advantage against well-funded competitors.
 Structure: Your comps raised [$X, $Y, $Z] → but they don't have your full stack → your size is your weapon → here's how.
-Example trigger: Outvio vs Sendcloud ($175M), ParcelLab ($112M), Aftership.
+Example trigger: Innkit vs Stayforge ($160M), Roomlogic ($95M), Bookwell.
 
 **ANGLE 4: "The Data Moat" (works for data-rich companies)**
 Use when: the company sits on unique data that competitors can't replicate.
 Structure: You have [type of data] under one roof → nobody else has that → here's how that becomes a moat.
-Example trigger: Swap has returns + cross-border + inventory + demand data combined.
+Example trigger: Haulstack has telematics + fuel card + maintenance + dispatch data combined.
 
 **ANGLE 5: "Investment Gap" (works when company is investing heavily but not seeing ROI)**
-Use when: the company is shipping AI/features fast but users/merchants don't notice or care yet.
+Use when: the company is shipping AI/features fast but users/customers don't notice or care yet.
 Structure: You're shipping [AI/features] faster than anyone → but in reviews/interviews, it doesn't come up → that stings → here's how to fix it.
-Example trigger: ParcelLab shipping AI fast but merchants only rave about tracking, not the AI.
+Example trigger: Stayforge shipping AI fast but hoteliers only rave about the channel manager, not the AI.
 
 ### Step 4: Draft the Email
 
@@ -86,7 +91,7 @@ CRITICAL RULES — violate any of these and the email is dead:
 **Structure (follow this EXACTLY):**
 
 ```
-subject: [company name lowercase] ai
+subject: [company name lowercase] [focus word]
 
 [first name lowercase], [opening hook — one line that establishes you've been studying their space].
 
@@ -96,16 +101,16 @@ recorded a short breakdown [going over / on] [specific tease — number of ways/
 
 promise it's worth a watch. :)
 
-- Rohan
+- {sender first name}
 ```
 
 **Word Count:**
 - Target: 60-80 words (excluding subject, sign-off, and link).
-- HARD MAX: 90 words. If you hit 90, cut. The Redo email (best performer) was ~75 words.
-- The Swap email failed because it was too long. Brevity is the entire game.
+- HARD MAX: 90 words. If you hit 90, cut. The Axlewise email (best performer) was ~75 words.
+- The Haulstack email failed because it was too long. Brevity is the entire game.
 
 **The Loom Tease:**
-- MUST be specific. Not "a breakdown of your company." Instead: "3 ways to turn redo's massive data into something NO competitor can replicate."
+- MUST be specific. Not "a breakdown of your company." Instead: "3 ways to turn axlewise's massive telematics data into something NO competitor can replicate."
 - Include a number when possible ("3 ways", "3 opportunities", "2 gaps").
 - The tease should make them feel like NOT watching means missing something built specifically for them.
 - Always include a personalization tag. Two formats depending on context:
@@ -125,9 +130,9 @@ promise it's worth a watch. :)
 - Using periods and proper punctuation everywhere. It should feel dashed off.
 - Making it longer than it needs to be. Every word must earn its spot.
 - Being vague about the Loom content. "Some thoughts" is weak. "3 ways to turn X into Y" is strong.
-- Repetitive sentence structures. "Loop doesn't have it. Klarna doesn't have it." feels like you're padding. Say it ONCE with force: "nobody else even comes close." One punch > two weak jabs.
+- Repetitive sentence structures. "Rotaly doesn't have it. Wagewell doesn't have it." feels like you're padding. Say it ONCE with force: "nobody else even comes close." One punch > two weak jabs.
 - Weak threat lines. "Your integration partners are becoming your competitors" is generic. "The platforms you integrate INTO are shipping the exact feature you sell" is visceral. Name the specific action, not the abstract concept.
-- Subject line should almost always end with "ai" — it signals the Loom's focus. Format: "[company] ai" not "[company] data" or "[company] space".
+- Subject line should almost always end with the focus word (in every example below, "ai") — it signals the Loom's focus. Format: "[company] ai" not "[company] data" or "[company] space". The focus word is what the Loom is about, not a generic descriptor of the company.
 - Using em-dashes (—). They feel editorial and polished. This is a raw text, not a Medium article. Use commas or periods.
 
 ## Output Format
@@ -139,10 +144,10 @@ subject: [subject line]
 
 [email body]
 
-- Rohan
+- {sender first name}
 ```
 
-Note: "Rohan" can be lowercase "rohan" — either works. Match the energy of the email.
+Note: the sender's name can be capitalized or lowercase — either works. Match the energy of the email.
 
 **Angle used:** [which angle from the list above]
 **Word count:** [body word count]
@@ -150,69 +155,71 @@ Note: "Rohan" can be lowercase "rohan" — either works. Match the energy of the
 
 ## Reference: Proven Emails
 
-### BEST PERFORMER — Got Reply (Sterling, Redo)
+These examples span a few different B2B markets (companies are fictional). The sender behind them records Looms on AI opportunities, which is why every subject ends in "ai". Use your own focus word, space and sign-off; keep the structure.
+
+### BEST PERFORMER — Got Reply (Maren, Axlewise, fleet management software)
 Angle: "You Pioneered, They're Copying"
 Word count: ~75
 
 ```
-subject: redo ai
+subject: axlewise ai
 
-sterling, i've been studying the returns space v closely.
+maren, i've been studying the fleet ops space v closely.
 
-you obv PIONEERED the consumer-paid returns model. loop offset stole it. you built the all-in-one post-purchase vision across 12 products, swap raised 100M last month, similar vision. loop's trying to stitch it together via acquisitions. now you're leading on AI, and the pattern will repeat.
+you obv PIONEERED insurer-paid driver scoring. routelyne safescore stole it. you built the all-in-one fleet ops vision across 9 products, haulstack raised 90M last month, similar vision. routelyne's trying to stitch it together via acquisitions. now you're leading on AI, and the pattern will repeat.
 
-recorded a short breakdown going over 3 ways to turn redo's massive data into something NO competitor can replicate (specifically, for you & paul) - [LOOM LINK]
+recorded a short breakdown going over 3 ways to turn axlewise's massive telematics data into something NO competitor can replicate (specifically, for you & dev) - [LOOM LINK]
 
 promise it's worth a watch. :)
 
-- Rohan
+- {sender first name}
 ```
 
-### GOT SHARED — Forwarded to Head of AI (Hannah, Loop)
+### GOT SHARED — Forwarded to Head of AI (Priya, Payvine, AP automation)
 Angle: "Category Gaps"
 Word count: ~55
 
 ```
-subject: loop intelligence
+subject: payvine intelligence
 
-hannah, i've been studying the returns space v closely.
+priya, i've been studying the AP automation space v closely.
 
-swap's raised $100, rebranded to "agentic commerce OS" all-in-one play. startups like returnalyze ($6M) and pinch ai ($5M) are building what should logically be features inside Loop, not separate companies.
+clearbill's raised $120M, rebranded to "autonomous finance OS" all-in-one play. startups like invoicesense ($7M) and matchbot ($4M) are building what should logically be features inside payvine, not separate companies.
 
-recorded a short breakdown going over category-wide gaps & 3 opportunities for loop. (specifically, for you kirsten & chris) - [LOOM LINK]
+recorded a short breakdown going over category-wide gaps & 3 opportunities for payvine. (specifically, for you omar & june) - [LOOM LINK]
 
 promise it's worth a watch. :)
 
-- Rohan
+- {sender first name}
 ```
 
-### TOO LONG — Good Content, No Reply (Sam, Swap)
+### TOO LONG — Good Content, No Reply (Theo, Haulstack, fleet management software)
 This one had the right energy but was ~120 words. That killed it. Learn from the content, not the length.
 
-### UNDERDOG ANGLE (Juan, Outvio)
+### UNDERDOG ANGLE (Lucia, Innkit, hotel software)
 Angle: "David vs Goliaths"
 
 ```
-subject: outvio ai
+subject: innkit ai
 
-jaun, your comps. sendcloud, $175M. parcellab, $112M. aftership, yk aftership
+lucia, your comps. stayforge, $160M. roomlogic, $95M. bookwell, yk bookwell
 
-outvio. a david amongst goliaths.
+innkit. a david amongst goliaths.
 
-bt they don't have the full stack, that you do. fulfillment, shipping, tracking, returns, support. connected. nor an agile, small team. they each own a slice. you own the whole picture.
+bt they don't have the full stack, that you do. booking engine, channel manager, pricing, guest messaging, payments. connected. nor an agile, small team. they each own a slice. you own the whole picture.
 
-recorded a breakdown on how to use your size to ship bleeding edge they'll take quarters, 100s $ks to stitch together. (for you & daniel) - [LOOM LINK]
+recorded a breakdown on how to use your size to ship bleeding edge they'll take quarters, 100s $ks to stitch together. (for you & tomas) - [LOOM LINK]
 
 promise it's worth a watch :)
 
-- rohan sawant
+- {sender first name} {sender last name}
 ```
 
 ## Final Check
 
 Before outputting, verify:
 1. Is it under 90 words? (Count the body only, not subject/sign-off/link)
-2. Is the subject lowercase [company] + "ai"?
+2. Is the subject lowercase [company] + the focus word (e.g. "ai")?
 3. Does it open with their first name + a hook about studying the space?
 4. Are there 3 or fewer competitor mentions, each with exactly ONE fact?
 5. Does the Loom tease include a specific number + what it covers?
@@ -231,28 +238,28 @@ If any answer is no, rewrite before outputting.
 
 These are real corrections made during email drafting. Internalize them:
 
-**ReShop iteration — key fixes:**
+**Shiftcash iteration (earned wage access for hourly workforces) — key fixes:**
 - FIRST DRAFT had "your integration partners are becoming your competitors" → WEAK, abstract. FIXED to "the platforms you integrate INTO are shipping the exact feature you sell" → visceral, specific.
-- FIRST DRAFT had "loop doesn't have it. klarna doesn't have it." → repetitive padding. FIXED to "all under one roof. nobody else even comes close." → one line, total conviction.
-- FIRST DRAFT subject was "reshop data" → changed to "reshop ai" because "ai" signals the loom's focus and is more compelling.
-- FIRST DRAFT had "(specifically, for you & XXX)" → changed to "(specifically for reshop)" when no second name was available.
+- FIRST DRAFT had "rotaly doesn't have it. wagewell doesn't have it." → repetitive padding. FIXED to "all under one roof. nobody else even comes close." → one line, total conviction.
+- FIRST DRAFT subject was "shiftcash data" → changed to "shiftcash ai" because "ai" signals the loom's focus and is more compelling.
+- FIRST DRAFT had "(specifically, for you & XXX)" → changed to "(specifically for shiftcash)" when no second name was available.
 - The second paragraph felt too long → tightened by cutting redundant competitor mentions. Two threats max per paragraph. If you need three, the third goes in the same sentence as one of the others.
 
-### APPROVED — ReShop (Hybrid: Category Gaps + Data Moat)
+### APPROVED — Shiftcash (Hybrid: Category Gaps + Data Moat)
 Word count: ~74
 
 ```
-subject: reshop ai
+subject: shiftcash ai
 
-XXX, i've been studying the post-purchase space v closely.
+XXX, i've been studying the frontline workforce space v closely.
 
-loop is already building instant refunds, literally comparing them to reshop on their own support pages. narvar will follow. the platforms you integrate INTO are shipping the exact feature you sell.
+rotaly is already building instant pay, literally comparing it to shiftcash on their own help pages. punchpad will follow. the platforms you integrate INTO are shipping the exact feature you sell.
 
-but reshop is sitting on a data combination none of them have. return reasons + cross-brand purchase history + card spend. all under one roof. nobody else even comes close.
+but shiftcash is sitting on a data combination none of them have. shift schedules + hours worked + early-pay patterns. all under one roof. nobody else even comes close.
 
-recorded a short breakdown on 3 ways to turn that into something NO platform can replicate (specifically for reshop) - [LOOM LINK]
+recorded a short breakdown on 3 ways to turn that into something NO platform can replicate (specifically for shiftcash) - [LOOM LINK]
 
 promise it's worth a watch. :)
 
-- rohan
+- {sender first name}
 ```
