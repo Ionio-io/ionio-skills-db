@@ -63,7 +63,7 @@ export function Sidebar({ live, onSearch, onNavigate, collapsed = false, onToggl
     <div className="flex h-full flex-col overflow-hidden">
       {/* ─── Brand ─────────────────────────────────────────────────────────── */}
       <div className="flex h-[60px] shrink-0 items-center gap-2.5 px-5">
-        <img src="/favicon.svg" alt="" className="size-[26px] shrink-0 rounded-md ring-1 ring-line" />
+        <img src="/logo.png" alt="" className="size-[26px] shrink-0" />
         <Fade hidden={collapsed} className="text-[15.5px] font-semibold tracking-tight text-ink">
           Ionio Skills
         </Fade>

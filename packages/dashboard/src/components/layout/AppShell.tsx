@@ -98,7 +98,7 @@ export function AppShell() {
             )}
           </AnimatePresence>
         </Dialog.Root>
-        <img src="/favicon.svg" alt="" className="size-5 rounded ring-1 ring-line" />
+        <img src="/logo.png" alt="" className="size-5" />
         <span className="text-[14px] font-semibold tracking-tight">Ionio Skills</span>
       </header>
 
