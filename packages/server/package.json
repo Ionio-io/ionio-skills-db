@@ -21,7 +21,7 @@
     "@hono/node-server": "^2.1.1",
     "@ionio-skills/core": "0.1.0",
     "@modelcontextprotocol/hono": "^2.0.1",
-    "@modelcontextprotocol/server": "^2.1.0",
+    "@modelcontextprotocol/server": "^2.3.0",
     "hono": "^4.13.8",
     "zod": "^4.6.5"
   }
